@@ -1,0 +1,1728 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GLORY CLUB - App Home Screen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;1,800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   GLORY CLUB - DESIGN TOKENS
+   Derived from @gloryclub.eg social key visuals
+   ============================================================ */
+:root{
+  /* Brand core */
+  --glory-purple-900:#170A29;
+  --glory-purple-850:#1E0E33;
+  --glory-purple-800:#2A1349;
+  --glory-purple-700:#3A1D63;
+  --glory-purple-600:#4B2A7B;   /* logo purple */
+  --glory-purple-500:#5E3795;
+  --glory-purple-400:#7A55B0;
+
+  --glory-orange-600:#D9611F;
+  --glory-orange-500:#E8722F;   /* primary accent */
+  --glory-orange-400:#F28C42;
+  --glory-orange-300:#F7A863;
+
+  --glory-cream:#F7E7D3;        /* wordmark / body on dark */
+  --glory-white:#FFFFFF;
+
+  --ok:#3FBF7F;
+  --warn:#F2C14E;
+  --danger:#E4572E;
+
+  /* Semantic */
+  --bg:var(--glory-purple-900);
+  --surface:rgba(255,255,255,.055);
+  --surface-2:rgba(255,255,255,.09);
+  --stroke:rgba(247,231,211,.14);
+  --stroke-strong:rgba(247,231,211,.28);
+  --text:var(--glory-cream);
+  /* Secondary ink carries deadlines, courts and coach names, so it is held at
+     4.5:1 on the card grounds rather than tuned by eye. */
+  --text-dim:rgba(247,231,211,.80);
+  --text-mute:rgba(247,231,211,.66);
+
+  /* Type */
+  --font-ar:'Cairo',system-ui,sans-serif;
+  --font-display:'Barlow Condensed','Arial Narrow',sans-serif;
+  --font-en:'Inter',system-ui,sans-serif;
+
+  /* Radii / elevation - brand is angular, so radii stay tight */
+  --r-sm:10px;
+  --r-md:16px;
+  --r-lg:22px;
+  --r-pill:999px;
+  --shadow-card:0 18px 40px -18px rgba(0,0,0,.75);
+  --shadow-cta:0 10px 26px -8px rgba(232,114,47,.55);
+
+  /* Spacing scale: 4pt */
+  --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s5:20px; --s6:24px; --s8:32px;
+}
+
+/* ============================================================
+   LIGHT THEME - same tokens, re-pointed. Brand anchors
+   (membership card, orange CTA, crest) stay identical so the
+   identity does not weaken on the light surface.
+   ============================================================ */
+.light{
+  --bg:#FBF4EA;
+  --surface:#FFFFFF;
+  --surface-2:#FFF7EC;
+  --stroke:rgba(75,42,123,.13);
+  --stroke-strong:rgba(75,42,123,.28);
+  --text:#2A1349;
+  --text-dim:rgba(42,19,73,.84);
+  --text-mute:rgba(42,19,73,.66);
+  --ok:#1E7A4E;  /* the dark-theme green is 2.3:1 on cream; paper gets its own */
+  --shadow-card:0 18px 38px -18px rgba(75,42,123,.45);
+}
+.light .statusbar{color:#2A1349}
+.light .icon-btn{background:#FFFFFF;box-shadow:0 2px 8px -2px rgba(75,42,123,.18)}
+.light .icon-btn:hover{background:#FFF7EC}
+.light .icon-btn .badge{border-color:var(--bg)}
+.light .avatar .dot{border-color:var(--bg)}
+.light .sub{box-shadow:0 4px 14px -8px rgba(75,42,123,.35)}
+.light .sub .ico{background:var(--glory-purple-600);border-color:transparent}
+.light .book{
+  background:#FFFFFF;
+  box-shadow:0 4px 14px -8px rgba(75,42,123,.35);
+}
+.light .date-chip{background:rgba(75,42,123,.07);border-color:rgba(75,42,123,.15)}
+/* on the dark membership card the ghost stays light-on-dark;
+   on a cream sheet it has to invert or it disappears */
+.light .member-card .btn-ghost{background:rgba(255,255,255,.14)}
+.light .sheet .btn-ghost{
+  background:rgba(75,42,123,.07);color:var(--glory-purple-600);
+  border-color:rgba(75,42,123,.28);
+}
+.light .sheet .btn-ghost:hover{background:rgba(75,42,123,.12)}
+.light .pill.due{background:rgba(217,97,31,.12);color:#B44E14;border-color:rgba(217,97,31,.35)}
+.light .pill.ok{background:rgba(38,140,92,.12);color:#1E7A4E;border-color:rgba(38,140,92,.32)}
+.light .hotline{
+  background:linear-gradient(120deg,rgba(232,114,47,.14),rgba(232,114,47,.04));
+  border-color:rgba(232,114,47,.35);
+}
+.light .hotline .n{color:var(--glory-orange-600)}
+/* the light orange tints only clear AA against purple, never against cream */
+.light .counter,.light .code,.light .rail-opt .mark{color:#B44E14}
+.light .mc-tier b{color:var(--glory-orange-300)}
+.light .hotline .slog{color:var(--glory-purple-600)}
+.light .sec-link{color:#B44E14}
+.light .tabbar{
+  background:linear-gradient(180deg,rgba(251,244,234,0),rgba(251,244,234,.97) 34%);
+  border-top-color:rgba(75,42,123,.1);
+}
+.light .tab.active{color:#B44E14}
+.light .tab:hover{color:var(--glory-purple-600)}
+.light .home-ind{background:rgba(42,19,73,.32)}
+/* membership card + offers keep their dark brand fill in both themes,
+   so the cream triangle texture on them is left untouched */
+.light .member-card{color:var(--glory-cream);border-color:rgba(75,42,123,.22)}
+.light .member-card .k,.light .member-card .bar-cap{color:rgba(247,231,211,.6)}
+.light .offer.o2 h4,.light .offer.o2 p,.light .offer.o2 .tag,
+.light .offer.o3 h4,.light .offer.o3 p,.light .offer.o3 .tag,
+.light .offer.o4 h4,.light .offer.o4 p,.light .offer.o4 .tag{color:var(--glory-cream)}
+
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{
+  font-family:var(--font-ar);
+  background:
+    radial-gradient(900px 500px at 15% -5%, #3A1D63 0%, transparent 60%),
+    radial-gradient(700px 500px at 100% 100%, #48225f 0%, transparent 55%),
+    #120820;
+  color:var(--text);
+  min-height:100vh;
+  padding:40px 16px 80px;
+  display:flex;flex-direction:column;align-items:center;gap:40px;
+}
+
+/* ---------- Page chrome (presentation only, not part of app) ---------- */
+.deck-head{text-align:center;max-width:760px}
+.deck-head h1{font-size:28px;font-weight:900;letter-spacing:-.01em}
+.deck-head p{color:var(--text-dim);font-size:14px;margin-top:8px;line-height:1.8}
+
+.stage{display:flex;flex-wrap:wrap;gap:44px;justify-content:center;align-items:flex-start}
+.screen-label{
+  text-align:center;margin-top:14px;font-family:var(--font-display);
+  letter-spacing:.18em;text-transform:uppercase;font-size:12px;color:var(--text-mute);
+}
+
+/* ---------- Device frame ---------- */
+.phone{
+  width:390px;height:844px;border-radius:44px;
+  background:#000;padding:9px;position:relative;
+  box-shadow:0 40px 90px -30px rgba(0,0,0,.9),0 0 0 1px rgba(247,231,211,.12);
+  flex:0 0 auto;
+}
+.phone-screen{
+  width:100%;height:100%;border-radius:36px;overflow:hidden;position:relative;
+  background:var(--bg);color:var(--text);display:flex;flex-direction:column;
+}
+.notch{
+  position:absolute;top:10px;left:50%;transform:translateX(-50%);
+  width:112px;height:28px;background:#000;border-radius:999px;z-index:60;
+}
+
+/* Brand triangle texture - lifted from the post backgrounds */
+.tri-pattern{
+  background-image:
+    linear-gradient(135deg, rgba(255,255,255,.045) 25%, transparent 25%),
+    linear-gradient(225deg, rgba(255,255,255,.045) 25%, transparent 25%);
+  background-size:22px 22px;
+}
+
+/* ---------- Status bar ---------- */
+.statusbar{
+  height:52px;flex:0 0 auto;display:flex;align-items:flex-end;justify-content:space-between;
+  padding:0 26px 6px;font-family:var(--font-en);font-size:13px;font-weight:600;
+  color:var(--glory-cream);direction:ltr;
+}
+.statusbar .icons{display:flex;gap:6px;align-items:center;opacity:.9}
+
+/* ---------- Scroll body ---------- */
+.app-body{flex:1;overflow-y:auto;overflow-x:hidden;padding-bottom:110px;scrollbar-width:none}
+.app-body::-webkit-scrollbar{display:none}
+
+/* ---------- Header ---------- */
+.app-header{
+  display:flex;align-items:center;gap:12px;padding:6px 20px 18px;
+}
+.avatar{
+  width:46px;height:46px;border-radius:14px;flex:0 0 auto;position:relative;
+  background:linear-gradient(150deg,var(--glory-orange-500),var(--glory-orange-600));
+  display:grid;place-items:center;font-weight:900;font-size:17px;color:#2A1349;
+  box-shadow:0 0 0 2px rgba(232,114,47,.25);
+}
+.avatar .dot{
+  position:absolute;bottom:-2px;inset-inline-start:-2px;width:13px;height:13px;border-radius:50%;
+  background:var(--ok);border:2.5px solid var(--bg);
+}
+.hello{flex:1;min-width:0}
+.hello .sm{font-size:11.5px;color:var(--text-mute);letter-spacing:.02em}
+.hello .lg{font-size:16.5px;font-weight:700;margin-top:1px}
+.icon-btn{
+  width:42px;height:42px;border-radius:13px;flex:0 0 auto;
+  background:var(--surface);border:1px solid var(--stroke);
+  display:grid;place-items:center;position:relative;cursor:pointer;transition:.18s;
+}
+.icon-btn:hover{background:var(--surface-2);border-color:var(--stroke-strong)}
+.icon-btn .badge{
+  position:absolute;top:-4px;inset-inline-end:-4px;min-width:18px;height:18px;padding:0 5px;
+  border-radius:999px;background:var(--glory-orange-500);color:#fff;
+  font-family:var(--font-en);font-size:10px;font-weight:700;
+  display:grid;place-items:center;border:2px solid var(--bg);
+}
+
+/* ---------- Membership card (hero) ---------- */
+.card-wrap{padding:0 20px}
+.member-card{
+  position:relative;border-radius:var(--r-lg);overflow:hidden;padding:20px;
+  background:
+    linear-gradient(150deg,var(--glory-purple-600) 0%, var(--glory-purple-700) 45%, var(--glory-purple-850) 100%);
+  border:1px solid rgba(247,231,211,.16);
+  box-shadow:var(--shadow-card);
+}
+.member-card::before{ /* orange chevron glow, echoes logo */
+  content:"";position:absolute;inset-inline-end:-60px;top:-70px;width:210px;height:210px;
+  background:radial-gradient(circle,rgba(232,114,47,.55),transparent 62%);
+}
+.member-card::after{ /* diagonal brand slash */
+  content:"";position:absolute;inset-inline-start:-30%;bottom:-70%;width:180%;height:120%;
+  background:linear-gradient(115deg,transparent 45%,rgba(247,231,211,.055) 45%,rgba(247,231,211,.055) 52%,transparent 52%);
+}
+.mc-top{position:relative;display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.mc-tier{
+  display:inline-flex;align-items:center;gap:6px;padding:5px 11px;border-radius:var(--r-pill);
+  background:rgba(247,231,211,.12);border:1px solid rgba(247,231,211,.3);
+  font-family:var(--font-display);letter-spacing:.16em;text-transform:uppercase;
+  font-size:11px;font-weight:700;
+}
+.mc-tier b{color:var(--glory-orange-300)}
+.mc-name{font-size:19px;font-weight:800;margin-top:12px;position:relative}
+.mc-id{
+  font-family:var(--font-en);font-size:12px;color:rgba(247,231,211,.65);
+  letter-spacing:.12em;margin-top:3px;direction:ltr;text-align:start;position:relative;
+}
+.mc-meta{position:relative;display:flex;gap:22px;margin-top:16px}
+.mc-meta .k{font-size:10.5px;color:rgba(247,231,211,.55);letter-spacing:.04em}
+.mc-meta .v{font-size:14px;font-weight:700;margin-top:2px}
+.mc-meta .v.warn{color:var(--warn)}
+
+.mc-bar{position:relative;margin-top:16px}
+.bar-track{height:7px;border-radius:99px;background:rgba(0,0,0,.35);overflow:hidden}
+.bar-fill{
+  height:100%;width:22%;border-radius:99px;
+  background:linear-gradient(90deg,var(--glory-orange-400),var(--glory-orange-600));
+  box-shadow:0 0 14px rgba(232,114,47,.7);
+}
+.bar-cap{display:flex;justify-content:space-between;margin-top:7px;font-size:10.5px;color:rgba(247,231,211,.6)}
+
+.mc-actions{position:relative;display:flex;gap:9px;margin-top:17px}
+.btn{
+  border:0;cursor:pointer;font-family:var(--font-ar);font-weight:700;font-size:13.5px;
+  border-radius:13px;padding:13px 16px;display:flex;align-items:center;justify-content:center;gap:7px;
+  transition:transform .15s, box-shadow .15s, background .15s;
+}
+.btn:active{transform:translateY(1px)}
+.btn-primary{
+  flex:1;background:linear-gradient(140deg,var(--glory-orange-400),var(--glory-orange-600));
+  color:#2A1349;box-shadow:var(--shadow-cta);
+}
+.btn-primary:hover{box-shadow:0 14px 32px -8px rgba(232,114,47,.75)}
+.btn-ghost{
+  background:rgba(255,255,255,.11);color:var(--glory-cream);
+  border:1px solid rgba(247,231,211,.25);flex:0 0 auto;padding:13px 15px;
+}
+.btn-ghost:hover{background:rgba(255,255,255,.17)}
+
+/* ---------- Section head ---------- */
+.sec{padding:26px 20px 0}
+.sec-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:13px}
+.sec-title{display:flex;align-items:center;gap:9px;font-size:15.5px;font-weight:800}
+/* the crest's downward chevron, not a generic accent bar */
+.sec-title::before{
+  content:"";width:13px;height:12px;background:var(--glory-orange-500);
+  clip-path:polygon(0 0,50% 34%,100% 0,100% 42%,50% 100%,0 42%);
+}
+.sec-link{font-size:12px;color:var(--glory-orange-400);font-weight:600;cursor:pointer}
+.sec-link:hover{color:var(--glory-orange-300)}
+
+/* ---------- Subscription rows ---------- */
+.sub{
+  display:flex;align-items:center;gap:12px;padding:13px;border-radius:var(--r-md);
+  background:var(--surface);border:1px solid var(--stroke);margin-bottom:9px;
+  cursor:pointer;transition:.18s;position:relative;overflow:hidden;
+}
+.sub:hover{background:var(--surface-2);border-color:var(--stroke-strong)}
+/* state reads from the row's own border tint plus the written pill,
+   never from a colour stripe alone */
+.sub{border-color:rgba(232,114,47,.42)}
+.sub.paid{border-color:var(--stroke)}
+.sub.expired{border-color:rgba(228,87,46,.42)}
+.sub .ico{
+  width:44px;height:44px;border-radius:13px;flex:0 0 auto;display:grid;place-items:center;
+  background:rgba(75,42,123,.75);border:1px solid rgba(247,231,211,.14);
+}
+.sub .txt{flex:1;min-width:0}
+.sub .t1{font-size:13.8px;font-weight:700}
+.sub .t2{font-size:11px;color:var(--text-mute);margin-top:3px}
+.pill{
+  font-size:10.5px;font-weight:700;padding:5px 10px;border-radius:var(--r-pill);white-space:nowrap;
+}
+.pill.due{background:rgba(232,114,47,.18);color:var(--glory-orange-300);border:1px solid rgba(232,114,47,.4)}
+.pill.ok{background:rgba(63,191,127,.15);color:#69d6a1;border:1px solid rgba(63,191,127,.35)}
+.pill.off{background:var(--surface-2);color:var(--text-mute);border:1px solid var(--stroke)}
+
+/* ---------- Offer carousel ---------- */
+.rail{display:flex;gap:12px;overflow-x:auto;padding:2px 20px 4px;scrollbar-width:none;margin:0 -20px}
+.rail::-webkit-scrollbar{display:none}
+.offer{
+  flex:0 0 224px;height:126px;border-radius:var(--r-md);position:relative;overflow:hidden;
+  padding:15px;display:flex;flex-direction:column;justify-content:flex-end;cursor:pointer;
+  border:1px solid rgba(247,231,211,.16);
+}
+/* Ember. Orange is the action colour, so a fully saturated orange card was the
+   accent used as a ground: it competed with the CTA and sat badly on cream.
+   This keeps the heat and drops the value, so the card stays in the dark
+   family and reads the same against both themes. */
+.offer.o-ember{
+  background:linear-gradient(140deg,#B44E14,#7A3210 52%,#2A1349);
+  border-color:rgba(247,168,99,.34);
+}
+.offer.o-ember h4{color:var(--glory-cream)}
+.offer.o-ember p{color:rgba(247,231,211,.76);opacity:1}
+.offer.o-ember .tag{background:rgba(23,10,41,.42);color:var(--glory-orange-300)}
+.offer.o2{background:linear-gradient(140deg,var(--glory-purple-500),var(--glory-purple-800))}
+.offer.o3{background:linear-gradient(140deg,var(--glory-purple-700),var(--glory-purple-850))}
+.offer.o4{background:linear-gradient(140deg,var(--glory-purple-600),var(--glory-purple-800))}
+.offer .tag{
+  position:absolute;top:12px;inset-inline-start:14px;font-family:var(--font-display);
+  letter-spacing:.16em;font-size:10.5px;font-weight:700;text-transform:uppercase;
+  background:rgba(0,0,0,.32);padding:4px 9px;border-radius:var(--r-pill);
+}
+.offer h4{font-size:15.5px;font-weight:800;line-height:1.35}
+.offer p{font-size:11px;opacity:.85;margin-top:4px}
+
+/* ---------- Booking row ---------- */
+.book{
+  display:flex;gap:12px;align-items:center;padding:12px 13px;border-radius:var(--r-md);
+  background:linear-gradient(120deg,rgba(75,42,123,.6),rgba(255,255,255,.045));
+  border:1px solid var(--stroke);margin-bottom:9px;
+}
+.date-chip{
+  width:50px;flex:0 0 auto;text-align:center;border-radius:12px;padding:7px 0;
+  background:rgba(0,0,0,.3);border:1px solid rgba(247,231,211,.16);
+}
+.date-chip .d{font-family:var(--font-display);font-size:20px;font-weight:800;line-height:1}
+.date-chip .m{font-size:9.5px;color:var(--text-mute);margin-top:2px}
+.book .txt{flex:1;min-width:0}
+.book .t1{font-size:13.5px;font-weight:700}
+.book .t2{font-size:11px;color:var(--text-mute);margin-top:3px;display:flex;gap:8px;align-items:center}
+
+/* ---------- Hotline strip (from post footers) ---------- */
+.hotline{
+  margin:22px 20px 0;border-radius:var(--r-md);padding:13px 16px;
+  background:linear-gradient(120deg,rgba(232,114,47,.16),rgba(232,114,47,.03));
+  border:1px solid rgba(232,114,47,.32);
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+}
+.hotline .l{font-size:11.5px;color:var(--text-dim)}
+.hotline .n{
+  font-family:var(--font-display);font-size:23px;font-weight:800;letter-spacing:.06em;
+  color:var(--glory-orange-300);direction:ltr;
+}
+.hotline .slog{
+  font-size:11.5px;font-weight:700;color:var(--glory-cream);margin-top:2px;
+}
+
+/* ---------- Presence strip on the hero card ----------
+   The card's headline is no longer money. It is who of yours is
+   inside the club right now. */
+.mc-presence{position:relative;margin-top:16px;padding-top:14px;border-top:1px solid rgba(247,231,211,.16)}
+.pres-lbl{
+  display:flex;align-items:center;gap:7px;
+  font-size:10.5px;letter-spacing:.04em;color:rgba(247,231,211,.62);
+}
+.pres-lbl i{
+  width:7px;height:7px;border-radius:99px;background:var(--ok);flex:0 0 auto;
+  box-shadow:0 0 0 3px rgba(63,191,127,.22);
+}
+.pres-row{display:flex;align-items:center;gap:9px;margin-top:9px}
+.faces{display:flex;flex-direction:row-reverse}
+.face{
+  width:30px;height:30px;border-radius:99px;display:grid;place-items:center;
+  font-size:12.5px;font-weight:800;color:#241038;border:2px solid var(--glory-purple-600);
+  margin-inline-start:-9px;
+}
+.face:last-child{margin-inline-start:0}
+.face.f1{background:var(--glory-orange-400)}
+.face.f2{background:var(--glory-cream)}
+.pres-txt{font-size:12.5px;line-height:1.5;color:var(--glory-cream)}
+.pres-txt b{font-weight:800}
+.pres-txt span{color:rgba(247,231,211,.62)}
+
+/* ---------- محتاج منك ----------
+   The only place on home that names an obligation. It renders only when
+   something is actually pending, so most days it is not on screen at all. */
+.need{
+  display:flex;align-items:center;gap:12px;padding:13px;border-radius:var(--r-md);
+  background:var(--surface);border:1px solid var(--stroke);margin-bottom:9px;
+  cursor:pointer;transition:.18s;
+}
+.need.money{border-color:rgba(232,114,47,.42)}
+.need:hover{background:var(--surface-2)}
+.need .ico{
+  width:42px;height:42px;border-radius:13px;flex:0 0 auto;display:grid;place-items:center;
+  background:rgba(232,114,47,.14);border:1px solid rgba(232,114,47,.3);
+}
+.need .txt{flex:1;min-width:0}
+.need .t1{font-size:13.8px;font-weight:700}
+.need .t2{font-size:11px;color:var(--text-mute);margin-top:3px}
+.need .act{
+  font-size:12px;font-weight:800;color:var(--text-dim);white-space:nowrap;flex:0 0 auto;
+}
+.need.money .act{color:var(--glory-orange-400)}
+.light .need.money .act{color:#B44E14}
+
+/* ---------- Tier benefits ----------
+   PLATINUM was a badge with no payoff. This is the payoff, stated plainly. */
+.perks{
+  border-radius:var(--r-lg);padding:16px 17px;
+  background:linear-gradient(150deg,rgba(75,42,123,.7),rgba(30,14,51,.55));
+  border:1px solid rgba(247,231,211,.16);
+}
+/* On cream the translucent purple turned to mud. Light theme gets its own
+   tinted paper surface, and the text tokens already read correctly on it. */
+.light .perks{
+  background:linear-gradient(150deg,#F1E7FA,#FBF4EA 70%);
+  border-color:rgba(75,42,123,.2);
+}
+.light .perk+.perk{border-top-color:rgba(75,42,123,.12)}
+.perk{display:flex;align-items:flex-start;gap:10px;padding:9px 0}
+.perk+.perk{border-top:1px solid rgba(247,231,211,.09)}
+.perk::before{
+  content:"";flex:0 0 auto;margin-top:5px;width:11px;height:10px;background:var(--glory-orange-500);
+  clip-path:polygon(0 0,50% 34%,100% 0,100% 42%,50% 100%,0 42%);
+}
+.perk .t1{font-size:13.2px;font-weight:700}
+.perk .t2{font-size:11px;color:var(--text-mute);margin-top:2px;line-height:1.6}
+.perk .used{
+  margin-inline-start:auto;font-family:var(--font-display);font-size:15px;font-weight:800;
+  letter-spacing:.04em;color:var(--glory-orange-300);direction:ltr;flex:0 0 auto;
+}
+.light .perk .used{color:#B44E14}
+
+/* ---------- Club notice ----------
+   The club already publishes maintenance and closure notices as JPEG
+   posters on Facebook. In the app they belong here, above the fold. */
+.notice{
+  margin:16px 20px 0;display:flex;gap:11px;align-items:flex-start;
+  padding:12px 13px;border-radius:var(--r-md);
+  background:rgba(242,193,78,.1);border:1px solid rgba(242,193,78,.34);
+}
+.notice .ni{flex:0 0 auto;margin-top:1px;color:var(--warn)}
+.notice .t1{font-size:12.8px;font-weight:700}
+.notice .t2{font-size:11px;color:var(--text-mute);margin-top:3px;line-height:1.6}
+
+/* ---------- Kid rows ---------- */
+.kid{
+  display:flex;align-items:center;gap:12px;padding:12px 13px;border-radius:var(--r-md);
+  background:var(--surface);border:1px solid var(--stroke);margin-bottom:9px;
+  cursor:pointer;transition:.18s;
+}
+.kid:hover{background:var(--surface-2);border-color:var(--stroke-strong)}
+.kid.inside{border-color:rgba(63,191,127,.4)}
+.kid .av{
+  width:44px;height:44px;border-radius:14px;flex:0 0 auto;display:grid;place-items:center;
+  font-size:16px;font-weight:800;color:#241038;position:relative;
+}
+.kid .av.a1{background:linear-gradient(145deg,var(--glory-orange-400),var(--glory-orange-600))}
+.kid .av.a2{background:linear-gradient(145deg,#F7E7D3,#d9c3a4)}
+.kid .av.a3{background:linear-gradient(145deg,#7f63b5,#4B2A7B);color:var(--glory-cream)}
+.kid .txt{flex:1;min-width:0}
+.kid .t1{font-size:13.8px;font-weight:700}
+.kid .t2{font-size:11px;color:var(--text-mute);margin-top:3px}
+.kid .t2 b{color:var(--text);font-weight:700}
+
+/* ---------- Free-slot chips ---------- */
+.slots{display:flex;gap:9px;overflow-x:auto;padding:2px 20px 4px;margin:0 -20px;scrollbar-width:none}
+.slots::-webkit-scrollbar{display:none}
+.slot{
+  flex:0 0 auto;min-width:104px;border-radius:var(--r-md);padding:12px 13px;cursor:pointer;
+  background:var(--surface);border:1px solid var(--stroke);transition:.18s;
+}
+.slot:hover{background:var(--surface-2);border-color:var(--stroke-strong);transform:translateY(-2px)}
+.slot .st{font-family:var(--font-display);font-size:21px;font-weight:800;letter-spacing:.03em;direction:ltr;text-align:start}
+.slot .sn{font-size:11px;color:var(--text-mute);margin-top:4px}
+.slot .sf{font-size:10.5px;font-weight:700;color:var(--ok);margin-top:7px}
+.slot.gone{opacity:.45;cursor:default}
+.slot.gone:hover{transform:none;background:var(--surface);border-color:var(--stroke)}
+.slot.gone .sf{color:var(--text-mute)}
+
+/* ---------- Account sheet rows ---------- */
+.set{
+  display:flex;align-items:center;gap:12px;padding:14px 13px;border-radius:var(--r-md);
+  background:var(--surface);border:1px solid var(--stroke);margin-bottom:9px;cursor:pointer;transition:.18s;
+}
+.set:hover{background:var(--surface-2);border-color:var(--stroke-strong)}
+.set .ico{
+  width:40px;height:40px;border-radius:12px;flex:0 0 auto;display:grid;place-items:center;
+  background:rgba(75,42,123,.75);border:1px solid rgba(247,231,211,.14);
+}
+.set .txt{flex:1;min-width:0}
+.set .t1{font-size:13.8px;font-weight:700}
+.set .t2{font-size:11px;color:var(--text-mute);margin-top:3px}
+.set .chev{color:var(--text-mute);flex:0 0 auto}
+.acct-block{
+  border-radius:var(--r-lg);padding:17px;margin-bottom:16px;
+  background:linear-gradient(150deg,var(--glory-purple-600),var(--glory-purple-800));
+  border:1px solid rgba(247,231,211,.14);
+}
+
+/* ---------- Bottom nav ---------- */
+.tabbar{
+  position:absolute;bottom:0;inset-inline:0;height:84px;z-index:40;
+  background:linear-gradient(180deg,rgba(23,10,41,0),rgba(23,10,41,.96) 34%);
+  display:flex;align-items:flex-start;justify-content:space-around;padding:16px 14px 0;
+  backdrop-filter:blur(14px);border-top:1px solid rgba(247,231,211,.09);
+}
+.tab{
+  display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;
+  color:var(--text-mute);font-size:10px;font-weight:600;transition:.18s;flex:1;
+}
+.tab.active{color:var(--glory-orange-400)}
+.tab:hover{color:var(--glory-cream)}
+.tab.fab{position:relative;top:-20px;flex:0 0 auto}
+.fab-btn{
+  width:56px;height:56px;border-radius:19px;display:grid;place-items:center;
+  background:linear-gradient(145deg,var(--glory-orange-400),var(--glory-orange-600));
+  box-shadow:0 12px 26px -8px rgba(232,114,47,.8);color:#2A1349;
+}
+.home-ind{
+  position:absolute;bottom:7px;left:50%;transform:translateX(-50%);
+  width:130px;height:5px;border-radius:99px;background:rgba(247,231,211,.4);z-index:50;
+}
+
+/* ============================================================
+   THE THREE EARNED MOMENTS
+   1. Entry pass  - the daily gate ritual
+   2. Renewal     - the once-a-year moment worth expanding
+   3. Press       - the chevron tick under every primary control
+   ============================================================ */
+
+/* --- 3. press: controls answer with the crest's own geometry --- */
+.btn,.sub,.icon-btn,.offer,.rail-opt{
+  transition:transform .22s cubic-bezier(.22,1,.36,1),
+             box-shadow .22s cubic-bezier(.22,1,.36,1),
+             background .18s ease,border-color .18s ease;
+}
+.btn:active,.q:active,.icon-btn:active,.rail-opt:active{transform:scale(.965)}
+.btn-primary{position:relative;overflow:hidden}
+.btn-primary::after{ /* chevron sweep on press, cut to the crest angle */
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(115deg,transparent 40%,rgba(255,255,255,.42) 50%,transparent 60%);
+  transform:translateX(-120%);
+}
+.btn-primary:active::after{transform:translateX(120%);transition:transform .5s ease-out}
+
+/* --- sheets --- */
+.scrim{
+  position:absolute;inset:0;z-index:70;background:rgba(12,5,22,.68);
+  backdrop-filter:blur(3px);opacity:0;pointer-events:none;transition:opacity .3s ease;
+}
+.scrim.on{opacity:1;pointer-events:auto}
+.sheet{
+  position:absolute;inset-inline:0;bottom:0;z-index:80;
+  background:var(--bg);border-top:1px solid var(--stroke-strong);
+  border-radius:26px 26px 36px 36px;padding:10px 20px 26px;
+  transform:translateY(102%);transition:transform .42s cubic-bezier(.22,1,.36,1);
+  max-height:88%;overflow-y:auto;scrollbar-width:none;
+  box-shadow:0 -22px 50px -20px rgba(0,0,0,.7);
+}
+.sheet::-webkit-scrollbar{display:none}
+.sheet.on{transform:translateY(0)}
+.grab{
+  width:42px;height:4px;border-radius:99px;background:var(--stroke-strong);
+  margin:0 auto 16px;
+}
+.sheet h3{font-size:17px;font-weight:800;margin-bottom:4px}
+.sheet .sub-line{font-size:12px;color:var(--text-mute);margin-bottom:18px}
+
+/* --- 1. entry pass --- */
+.pass{
+  position:relative;border-radius:20px;overflow:hidden;padding:22px 20px 20px;text-align:center;
+  background:linear-gradient(160deg,var(--glory-purple-600),var(--glory-purple-850));
+  border:1px solid rgba(247,231,211,.2);color:var(--glory-cream);
+}
+.pass::before{ /* the chevron, cut out of the pass itself */
+  content:"";position:absolute;inset-inline:0;top:0;height:74px;
+  background:rgba(247,231,211,.07);
+  clip-path:polygon(0 0,50% 42%,100% 0,100% 26%,50% 100%,0 26%);
+}
+.pass .crest{position:relative;margin-bottom:10px}
+.pass .who{position:relative;font-size:18px;font-weight:800}
+.pass .idline{
+  position:relative;font-family:var(--font-en);font-size:11.5px;letter-spacing:.14em;
+  color:rgba(247,231,211,.6);margin-top:3px;direction:ltr;
+}
+.qr{
+  position:relative;width:150px;height:150px;margin:18px auto 0;border-radius:14px;
+  background:var(--glory-cream);padding:11px;
+}
+.qr canvas{width:100%;height:100%;display:block;image-rendering:pixelated}
+.scan{ /* truthful: it moves only while the pass is open */
+  position:absolute;inset-inline:11px;height:2px;top:11px;
+  background:linear-gradient(90deg,transparent,var(--glory-orange-500),transparent);
+  animation:scan 2.6s cubic-bezier(.45,0,.55,1) infinite;
+}
+@keyframes scan{0%,100%{transform:translateY(0)}50%{transform:translateY(126px)}}
+.pass-foot{
+  position:relative;margin-top:16px;padding-top:14px;
+  border-top:1px dashed rgba(247,231,211,.28);
+  display:flex;justify-content:space-between;font-size:11.5px;
+}
+.pass-foot .k{color:rgba(247,231,211,.55)}
+.pass-foot .v{font-weight:700}
+
+/* --- 2. renewal --- */
+.rail-opt{
+  display:flex;align-items:center;gap:12px;width:100%;text-align:start;
+  padding:13px;border-radius:14px;margin-bottom:9px;cursor:pointer;
+  background:var(--surface);border:1px solid var(--stroke);color:inherit;
+  font-family:var(--font-ar);font-size:13.5px;font-weight:700;
+}
+.rail-opt:hover{border-color:var(--stroke-strong);background:var(--surface-2)}
+.rail-opt[aria-checked="true"]{
+  border-color:var(--glory-orange-500);
+  box-shadow:0 6px 18px -10px rgba(232,114,47,.9);
+}
+.rail-opt .mark{
+  width:38px;height:38px;border-radius:11px;flex:0 0 auto;display:grid;place-items:center;
+  background:rgba(232,114,47,.14);border:1px solid rgba(232,114,47,.32);
+  font-family:var(--font-display);font-size:13px;font-weight:800;letter-spacing:.04em;
+  color:var(--glory-orange-300);
+}
+.rail-opt>span:not(.mark):not(.tick){display:block;min-width:0}
+.rail-opt .t2{display:block;font-size:11px;font-weight:500;color:var(--text-mute);margin-top:3px;line-height:1.5}
+.rail-opt .tick{
+  margin-inline-start:auto;width:20px;height:20px;border-radius:50%;flex:0 0 auto;
+  border:1.5px solid var(--stroke-strong);display:grid;place-items:center;
+}
+.rail-opt[aria-checked="true"] .tick{background:var(--glory-orange-500);border-color:transparent}
+.rail-opt[aria-checked="true"] .tick svg{opacity:1}
+.rail-opt .tick svg{opacity:0;transition:opacity .18s}
+
+.amount-row{
+  display:flex;justify-content:space-between;align-items:baseline;
+  padding:14px 0 18px;border-bottom:1px solid var(--stroke);margin-bottom:18px;
+}
+.amount-row .k{font-size:12.5px;color:var(--text-dim)}
+.amount-row .v{font-family:var(--font-display);font-size:30px;font-weight:800;letter-spacing:.01em}
+.amount-row .v small{font-family:var(--font-ar);font-size:13px;font-weight:700;margin-inline-start:4px}
+
+.pay-stage{display:none}
+.pay-stage.on{display:block}
+
+/* processing: truthful per-rail stages, no fake delay */
+.working{text-align:center;padding:26px 0 10px}
+.working .spin{
+  width:56px;height:56px;margin:0 auto 18px;position:relative;
+}
+.working .spin i{
+  position:absolute;inset:0;background:var(--glory-orange-500);
+  clip-path:polygon(0 0,50% 34%,100% 0,100% 42%,50% 100%,0 42%);
+  animation:beat 1.15s cubic-bezier(.4,0,.2,1) infinite;
+}
+.working .spin i:nth-child(2){animation-delay:.16s;opacity:.45}
+.working .spin i:nth-child(3){animation-delay:.32s;opacity:.2}
+@keyframes beat{0%{transform:translateY(-10px);opacity:0}
+  35%{opacity:1}100%{transform:translateY(12px);opacity:0}}
+.working .now{font-size:14.5px;font-weight:700}
+.working .step{font-size:11.5px;color:var(--text-mute);margin-top:6px;font-family:var(--font-en);direction:ltr}
+
+/* done: the crest star lands, the year refills */
+.done{text-align:center;padding:14px 0 0}
+.done .seal{width:96px;height:92px;margin:0 auto 16px}
+.done .seal .star{transform-origin:110px 122px}
+.done.play .seal .star{animation:land .62s cubic-bezier(.22,1,.36,1) both}
+@keyframes land{
+  0%{transform:scale(2.6) rotate(-24deg);opacity:0}
+  60%{opacity:1}
+  100%{transform:scale(1) rotate(0);opacity:1}
+}
+.done h4{font-size:19px;font-weight:800}
+.done p{font-size:12.5px;color:var(--text-dim);margin-top:7px;line-height:1.8}
+.counter{
+  font-family:var(--font-display);font-size:52px;font-weight:800;line-height:1;
+  margin:16px 0 2px;color:var(--glory-orange-400);
+}
+.counter-cap{font-size:11.5px;color:var(--text-mute)}
+
+/* fawry / cash end in a reference, not a fake receipt */
+.code-box{
+  margin-top:6px;padding:18px;border-radius:16px;text-align:center;
+  background:var(--surface);border:1px dashed var(--stroke-strong);
+}
+.code-box .k{font-size:11.5px;color:var(--text-mute)}
+.code-box .code{
+  font-family:var(--font-display);font-size:34px;font-weight:800;letter-spacing:.14em;
+  margin-top:8px;direction:ltr;color:var(--glory-orange-300);
+}
+
+/* the card acknowledges the renewal when the sheet closes */
+.member-card.renewed,.acct-block.renewed{animation:lift .7s cubic-bezier(.22,1,.36,1)}
+@keyframes lift{
+  0%{transform:translateY(0) scale(1)}
+  40%{transform:translateY(-6px) scale(1.014)}
+  100%{transform:translateY(0) scale(1)}
+}
+.bar-fill{transition:width 1.5s cubic-bezier(.22,1,.36,1)}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition-duration:.01ms!important}
+  .scan{display:none}
+}
+
+/* ---------- Style guide panel ---------- */
+.guide{
+  width:min(100%,860px);background:rgba(255,255,255,.035);
+  border:1px solid var(--stroke);border-radius:var(--r-lg);padding:26px;
+  direction:ltr;text-align:left;
+}
+.guide h2{
+  font-family:var(--font-display);letter-spacing:.2em;text-transform:uppercase;
+  font-size:14px;color:var(--glory-orange-400);margin-bottom:18px;
+}
+.swatches{display:grid;grid-template-columns:repeat(auto-fit,minmax(104px,1fr));gap:10px;margin-bottom:26px}
+.sw{border-radius:12px;overflow:hidden;border:1px solid var(--stroke)}
+.sw .chip{height:58px}
+.sw .lbl{padding:8px 10px;font-family:var(--font-en);font-size:10.5px;direction:ltr;text-align:left}
+.sw .lbl b{display:block;font-size:11px;margin-bottom:2px}
+.sw .lbl span{color:var(--text-mute)}
+.type-row{display:flex;flex-wrap:wrap;gap:26px;align-items:flex-end}
+.type-row div p{color:var(--text-mute);font-size:11px;margin-top:6px;font-family:var(--font-en);direction:ltr;text-align:left}
+.note{margin-top:22px;font-size:12.5px;line-height:2;color:var(--text-dim)}
+.note b{color:var(--glory-cream)}
+</style>
+</head>
+<body>
+
+<header class="deck-head">
+  <h1>Glory Club - home, family access, and booking</h1>
+  <p>الشاشة الرئيسية بقت عن العيلة والملاعب والفعاليات. الاشتراك والدفع اتنقلوا جوه «حسابي».</p>
+</header>
+
+<div class="stage">
+
+  <div id="screen-dark">
+    <div class="phone">
+      <div class="notch"></div>
+      <div class="phone-screen">
+
+        <div class="statusbar">
+          <span>9:41</span>
+          <span class="icons">
+            <svg aria-hidden="true" width="17" height="11" viewBox="0 0 17 11" fill="currentColor">
+              <rect x="0" y="7" width="3" height="4" rx="1" />
+              <rect x="4.5" y="5" width="3" height="6" rx="1" />
+              <rect x="9" y="2.5" width="3" height="8.5" rx="1" />
+              <rect x="13.5" y="0" width="3" height="11" rx="1" />
+            </svg>
+            <svg aria-hidden="true" width="16" height="12" viewBox="0 0 16 12" fill="currentColor">
+              <path
+                d="M8 11.5 5.4 8.7a3.7 3.7 0 0 1 5.2 0L8 11.5Zm-5.1-5.4a8.6 8.6 0 0 1 10.2 0l-1.5 1.6a6.4 6.4 0 0 0-7.2 0L2.9 6.1ZM0 3.3a12.6 12.6 0 0 1 16 0l-1.5 1.6a10.4 10.4 0 0 0-13 0L0 3.3Z" />
+            </svg>
+            <svg aria-hidden="true" width="25" height="12" viewBox="0 0 25 12" fill="none">
+              <rect x=".5" y=".5" width="21" height="11" rx="3" stroke="currentColor" opacity=".5" />
+              <rect x="2" y="2" width="16" height="8" rx="1.6" fill="currentColor" />
+              <path d="M23 4v4a2.2 2.2 0 0 0 0-4Z" fill="currentColor" opacity=".5" />
+            </svg>
+          </span>
+        </div>
+
+        <div class="app-body">
+
+          <!-- Header -->
+          <div class="app-header">
+            <div class="avatar">ح<span class="dot"></span></div>
+            <div class="hello">
+              <div class="sm">أهلاً بيك في نادي للبطل</div>
+              <div class="lg">حازم الموجي</div>
+            </div>
+            <div class="icon-btn" data-open="pass" role="button" tabindex="0" aria-label="بطاقة الدخول">
+              <svg aria-hidden="true" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"
+                stroke-linecap="round">
+                <rect x="3" y="3" width="7" height="7" rx="1.5" />
+                <rect x="14" y="3" width="7" height="7" rx="1.5" />
+                <rect x="3" y="14" width="7" height="7" rx="1.5" />
+                <path d="M14 14h3v3h-3zM20 14h1M14 20h3M20 20h1" />
+              </svg>
+            </div>
+            <div class="icon-btn" role="button" tabindex="0" aria-label="الإشعارات">
+              <svg aria-hidden="true" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="1.9" stroke-linecap="round">
+                <path d="M18 8A6 6 0 1 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+                <path d="M13.7 21a2 2 0 0 1-3.4 0" />
+              </svg>
+              <span class="badge">3</span>
+            </div>
+          </div>
+
+          <!-- Membership hero card -->
+          <div class="card-wrap">
+            <div class="member-card tri-pattern">
+              <div class="mc-top">
+                <span class="mc-tier">عضوية <b>PLATINUM</b></span>
+                <!-- Glory crest mark -->
+                <svg aria-hidden="true" width="48" height="44" viewBox="0 0 220 200" fill="none" style="opacity:.97">
+                  <!-- crest: wide chevron wings + long bottom point -->
+                  <path d="M110 46 L54 10 L46 76 L8 68 L110 194 L212 68 L174 76 L166 10 Z"
+                        fill="rgba(23,10,41,.5)" stroke="#F7E7D3" stroke-width="9" stroke-linejoin="round"/>
+                  <!-- athlete, arms raised -->
+                  <path d="M92 88 L74 52 M128 88 L146 52" stroke="#F7E7D3" stroke-width="12" stroke-linecap="round"/>
+                  <circle cx="74" cy="48" r="7.5" fill="#F7E7D3"/>
+                  <circle cx="146" cy="48" r="7.5" fill="#F7E7D3"/>
+                  <circle cx="110" cy="62" r="12" fill="#F7E7D3"/>
+                  <path d="M94 80 h32 l-7 30 h-18 Z" fill="#F7E7D3"/>
+                  <path d="M110 116 l5 10 11 1.5 -8 7.8 1.9 11 -9.9-5.3 -9.9 5.3 1.9-11 -8-7.8 11-1.5 Z" fill="#E8722F"/>
+                </svg>
+              </div>
+              <div class="mc-name">حازم الموجي</div>
+              <div class="mc-id">ID · GC-2026-04871</div>
+
+              <!-- The card's headline is who of yours is inside the club,
+                   not what you owe. Money lives in حسابي. -->
+              <div class="mc-presence">
+                <div class="pres-lbl"><i></i> دلوقتي في النادي</div>
+                <div class="pres-row">
+                  <div class="faces">
+                    <span class="face f1">ي</span>
+                    <span class="face f2">م</span>
+                  </div>
+                  <div class="pres-txt"><b>يوسف</b> و<b>مريم</b> دخلوا 4:12 م<br><span>يوسف في حصة الكرة لحد 6:00</span></div>
+                </div>
+              </div>
+
+              <div class="mc-actions">
+                <button class="btn btn-primary" data-open="pass">
+                  <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                    stroke-linecap="round">
+                    <rect x="3" y="3" width="7" height="7" rx="1.5" />
+                    <rect x="14" y="3" width="7" height="7" rx="1.5" />
+                    <rect x="3" y="14" width="7" height="7" rx="1.5" />
+                    <path d="M14 14h3v3h-3zM20 14h1M14 20h3M20 20h1" />
+                  </svg>
+                  افتح البوابة
+                </button>
+                <button class="btn btn-ghost" data-open="account" aria-label="حسابي وعضويتي">
+                  <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"
+                    stroke-linecap="round">
+                    <circle cx="12" cy="12" r="3.2" />
+                    <path
+                      d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1.03 1.56V21a2 2 0 1 1-4 0v-.09A1.7 1.7 0 0 0 8.9 19.3a1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.7 1.7 0 0 0 .34-1.87 1.7 1.7 0 0 0-1.56-1.03H3a2 2 0 1 1 0-4h.09A1.7 1.7 0 0 0 4.7 8.9a1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.7 1.7 0 0 0 9.06 4.7 1.7 1.7 0 0 0 10.1 3.14V3a2 2 0 1 1 4 0v.09a1.7 1.7 0 0 0 1.03 1.56 1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.7 1.7 0 0 0-.34 1.87v0a1.7 1.7 0 0 0 1.56 1.03H21a2 2 0 1 1 0 4h-.09a1.7 1.7 0 0 0-1.56 1.03Z" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- محتاج منك: the only obligation surface on home. Renders per
+               state; on a clear month this whole section is absent. -->
+          <div class="sec">
+            <div class="sec-head">
+              <div class="sec-title">محتاج منك</div>
+              <div class="sec-link" data-open="account">حسابي</div>
+            </div>
+
+            <div class="need money" data-open="pay">
+              <div class="ico">
+                <svg aria-hidden="true" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#F7A863" stroke-width="1.9"
+                  stroke-linecap="round">
+                  <rect x="2" y="5" width="20" height="14" rx="2.5" />
+                  <path d="M2 10h20" />
+                  <path d="M6 15h4" />
+                </svg>
+              </div>
+              <div class="txt">
+                <div class="t1">قسط أكاديمية الكرة · يوسف</div>
+                <div class="t2">القسط التاني من الترم · قبل 15 أغسطس</div>
+              </div>
+              <span class="act">ادفع</span>
+            </div>
+
+            <div class="need">
+              <div class="ico">
+                <svg aria-hidden="true" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#F7A863" stroke-width="1.9"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M14 2.5H6.5A1.5 1.5 0 0 0 5 4v16a1.5 1.5 0 0 0 1.5 1.5h11A1.5 1.5 0 0 0 19 20V7.5Z" />
+                  <path d="M14 2.5V7.5H19" />
+                  <path d="M9 13h6M9 16.5h4" />
+                </svg>
+              </div>
+              <div class="txt">
+                <div class="t1">شهادة طبية · مريم</div>
+                <div class="t2">مطلوبة قبل أول حصة سباحة</div>
+              </div>
+              <span class="act">ارفع</span>
+            </div>
+
+            <div class="need">
+              <div class="ico">
+                <svg aria-hidden="true" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#F7A863" stroke-width="1.9"
+                  stroke-linecap="round">
+                  <rect x="3" y="4" width="18" height="17" rx="2.5" />
+                  <path d="M8 2v4M16 2v4M3 10h18" />
+                  <path d="M12 14v3.5" />
+                </svg>
+              </div>
+              <div class="txt">
+                <div class="t1">حصة سباحة الأربع · عمر</div>
+                <div class="t2">محتاجة تأكيد حضور قبل بكرة</div>
+              </div>
+              <span class="act">أكّد</span>
+            </div>
+          </div>
+
+          <!-- What PLATINUM actually buys. The badge alone bought nothing. -->
+          <div class="sec">
+            <div class="sec-head">
+              <div class="sec-title">مزايا بلاتينيوم</div>
+              <div class="sec-link">كل المزايا</div>
+            </div>
+            <div class="perks">
+              <div class="perk">
+                <div>
+                  <div class="t1">أولوية حجز الملاعب</div>
+                  <div class="t2">بتحجز قبل باقي العضويات بـ 48 ساعة</div>
+                </div>
+              </div>
+              <div class="perk">
+                <div>
+                  <div class="t1">تذاكر ضيوف</div>
+                  <div class="t2">فاضل من رصيد الشهر ده</div>
+                </div>
+                <span class="used">4</span>
+              </div>
+              <div class="perk">
+                <div>
+                  <div class="t1">دخول فعاليات النادي</div>
+                  <div class="t2">الحفلات والبطولات من غير تذكرة</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Upcoming -->
+          <div class="sec">
+            <div class="sec-head">
+              <div class="sec-title">حجوزاتك الجاية</div>
+              <div class="sec-link">التقويم</div>
+            </div>
+
+            <div class="book">
+              <div class="date-chip"><div class="d">09</div><div class="m">أغسطس</div></div>
+              <div class="txt">
+                <div class="t1">ملعب بادل 2</div>
+                <div class="t2"><span>7:00 م - 8:30 م</span><span>·</span><span>أنت + 3</span></div>
+              </div>
+              <span class="pill ok">مؤكد</span>
+            </div>
+
+            <div class="book">
+              <div class="date-chip"><div class="d">11</div><div class="m">أغسطس</div></div>
+              <div class="txt">
+                <div class="t1">حصة سباحة · عمر</div>
+                <div class="t2"><span>10:00 - 11:00 ص</span><span>·</span><span>كوتش أحمد</span></div>
+              </div>
+              <span class="pill due">أكّد الحضور</span>
+            </div>
+          </div>
+
+          <!-- Kids: presence, access, and what they are in the middle of -->
+          <div class="sec">
+            <div class="sec-head">
+              <div class="sec-title">أولادك</div>
+              <div class="sec-link">صلاحيات الدخول</div>
+            </div>
+
+            <div class="kid inside">
+              <div class="av a1">ي</div>
+              <div class="txt">
+                <div class="t1">يوسف · 9 سنين</div>
+                <div class="t2">جوّه النادي من <b>4:12 م</b> · حصة كرة، ملعب 3، لحد 6:00</div>
+              </div>
+              <span class="pill ok">داخل</span>
+            </div>
+
+            <div class="kid inside">
+              <div class="av a2">م</div>
+              <div class="txt">
+                <div class="t1">مريم · 6 سنين</div>
+                <div class="t2">جوّه النادي من <b>4:12 م</b> · منطقة الأطفال</div>
+              </div>
+              <span class="pill ok">داخل</span>
+            </div>
+
+            <div class="kid">
+              <div class="av a3">ع</div>
+              <div class="txt">
+                <div class="t1">عمر · 12 سنة</div>
+                <div class="t2">برّه النادي · تمرين السباحة بكرة 10:00 ص</div>
+              </div>
+              <span class="pill off">برّه</span>
+            </div>
+          </div>
+
+          <!-- Padel, the thing members open the app to do -->
+          <div class="sec">
+            <div class="sec-head">
+              <div class="sec-title">ملاعب فاضية النهاردة</div>
+              <div class="sec-link">كل المواعيد</div>
+            </div>
+            <div class="slots">
+              <div class="slot">
+                <div class="st">6:00 PM</div>
+                <div class="sn">بادل 1</div>
+                <div class="sf">فاضي</div>
+              </div>
+              <div class="slot">
+                <div class="st">7:30 PM</div>
+                <div class="sn">بادل 2</div>
+                <div class="sf">فاضي</div>
+              </div>
+              <div class="slot gone">
+                <div class="st">8:00 PM</div>
+                <div class="sn">بادل 1</div>
+                <div class="sf">محجوز</div>
+              </div>
+              <div class="slot">
+                <div class="st">9:00 PM</div>
+                <div class="sn">تنس 1</div>
+                <div class="sf">فاضي</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Academies open for enrolment. No prices here: the club has
+               published none, and inventing them would be a lie on a slide. -->
+          <div class="sec">
+            <div class="sec-head">
+              <div class="sec-title">أكاديميات فاتحة تسجيل</div>
+              <div class="sec-link">كل الأكاديميات</div>
+            </div>
+
+            <div class="sub paid">
+              <div class="ico">
+                <svg aria-hidden="true" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#F7E7D3" stroke-width="1.7"
+                  stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="9" />
+                  <path d="M12 7.6l3.6 2.6-1.4 4.3h-4.4L8.4 10.2z" fill="#F7E7D3" stroke="none" />
+                  <path d="M12 3v4.6M4.4 9.6l4 .6M19.6 9.6l-4 .6M7.2 19.4l3-4.9M16.8 19.4l-3-4.9" />
+                </svg>
+              </div>
+              <div class="txt">
+                <div class="t1">ابنك يجرّب أي لعبة</div>
+                <div class="t2">حصة كاملة بتدريب ومتابعة · من غير فلوس</div>
+              </div>
+              <span class="pill ok">مجانية</span>
+            </div>
+
+            <div class="sub paid">
+              <div class="ico">
+                <svg aria-hidden="true" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#F7E7D3" stroke-width="1.8"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path
+                    d="M2 17.5c1.6 0 1.6 1.4 3.2 1.4s1.6-1.4 3.2-1.4 1.6 1.4 3.2 1.4 1.6-1.4 3.2-1.4 1.6 1.4 3.2 1.4 1.6-1.4 3.2-1.4" />
+                  <path d="M6.5 15 12 8.5l5 3" />
+                  <circle cx="17.5" cy="6.5" r="2" />
+                </svg>
+              </div>
+              <div class="txt">
+                <div class="t1">أكاديمية السباحة · مستوى أول</div>
+                <div class="t2">سبت وثلاثاء · مجمع حمامات السباحة</div>
+              </div>
+              <span class="pill due">سجّل</span>
+            </div>
+
+            <div class="sub paid">
+              <div class="ico">
+                <svg aria-hidden="true" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#F7E7D3" stroke-width="1.9"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="13" cy="4.6" r="2.1" />
+                  <path d="M4 9.5 9.5 7l3.7 1.4L18 6.6" />
+                  <path d="M13.2 8.4 12 13l4.4 2.2L18 21" />
+                  <path d="M12 13 8 15.4 5.5 21" />
+                </svg>
+              </div>
+              <div class="txt">
+                <div class="t1">جمباز، كاراتيه، وجودو</div>
+                <div class="t2">التسجيل مفتوح في كل المدارس الرياضية</div>
+              </div>
+              <span class="pill due">سجّل</span>
+            </div>
+          </div>
+
+          <!-- Padel court offers. Demo content: the club publishes no
+               pricing or promotions anywhere, so these are placeholders and
+               must be replaced with the club's real terms before the pitch. -->
+          <div class="sec">
+            <div class="sec-head">
+              <div class="sec-title">عروض ملاعب البادل</div>
+              <div class="sec-link">كل العروض</div>
+            </div>
+            <div class="rail">
+              <div class="offer o-ember tri-pattern">
+                <span class="tag">Morning</span>
+                <h4>ساعات الصباح</h4>
+                <p>من 8 لـ 12 · أرخص سعر في اليوم</p>
+              </div>
+              <div class="offer o2 tri-pattern">
+                <span class="tag">Bundle</span>
+                <h4>احجز 3 ساعات، ادفع 2</h4>
+                <p>الساعات سارية طول الشهر</p>
+              </div>
+              <div class="offer o3 tri-pattern">
+                <span class="tag">Coaching</span>
+                <h4>درس بادل مع كابتن</h4>
+                <p>45 دقيقة · فردي أو زوجي</p>
+              </div>
+              <div class="offer o4 tri-pattern">
+                <span class="tag">Tournament</span>
+                <h4>بطولة البادل الشهرية</h4>
+                <p>فرق زوجية · التسجيل مفتوح</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Operational notice, the kind the club posts on Facebook today -->
+          <div class="notice">
+            <svg aria-hidden="true" class="ni" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round">
+              <circle cx="12" cy="12" r="9" />
+              <path d="M12 7.6v5.2" />
+              <path d="M12 16.2h.01" />
+            </svg>
+            <div>
+              <div class="t1">حمامات السباحة مقفولة بكرة للصيانة</div>
+              <div class="t2">صيانة دورية · هنبعتلك إشعار أول ما تفتح تاني</div>
+            </div>
+          </div>
+
+          <!-- Hotline -->
+          <div class="hotline">
+            <div>
+              <div class="l">الخط الساخن · خدمة الأعضاء</div>
+              <div class="slog">#نادي_للبطل</div>
+            </div>
+            <div class="n">17302</div>
+          </div>
+
+        </div><!-- /app-body -->
+
+        <!-- Tab bar -->
+        <nav class="tabbar">
+          <div class="tab active">
+            <svg aria-hidden="true" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round">
+              <path d="M3 10.5 12 3l9 7.5" />
+              <path d="M5.5 9.5V20h13V9.5" />
+            </svg>
+            <span>الرئيسية</span>
+          </div>
+          <div class="tab">
+            <svg aria-hidden="true" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round">
+              <rect x="3" y="4" width="18" height="17" rx="2.5" />
+              <path d="M8 2v4M16 2v4M3 10h18" />
+            </svg>
+            <span>الحجوزات</span>
+          </div>
+          <div class="tab fab" data-open="pass" role="button" tabindex="0" aria-label="بطاقة الدخول">
+            <div class="fab-btn">
+              <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"
+                stroke-linecap="round">
+                <rect x="3" y="3" width="7" height="7" rx="1.5" />
+                <rect x="14" y="3" width="7" height="7" rx="1.5" />
+                <rect x="3" y="14" width="7" height="7" rx="1.5" />
+                <path d="M14 14h3v3h-3zM20 14h1M14 20h3M20 20h1" />
+              </svg>
+            </div>
+          </div>
+          <div class="tab">
+            <svg aria-hidden="true" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="8" cy="8" r="3.4" />
+              <path d="M2 20a6 6 0 0 1 12 0" />
+              <circle cx="17" cy="10" r="2.6" />
+              <path d="M14.4 20a5 5 0 0 1 7.6-4.3" />
+            </svg>
+            <span>عيلتي</span>
+          </div>
+          <div class="tab" data-open="account" role="button" tabindex="0" aria-label="حسابي">
+            <svg aria-hidden="true" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round">
+              <circle cx="12" cy="8" r="4" />
+              <path d="M4 21a8 8 0 0 1 16 0" />
+            </svg>
+            <span>حسابي</span>
+          </div>
+        </nav>
+        <div class="home-ind"></div>
+
+        <!-- ===== Moment 1: the gate ritual ===== -->
+        <div class="scrim" data-close></div>
+
+        <div class="sheet" data-sheet="pass" aria-hidden="true">
+          <div class="grab"></div>
+          <h3>بطاقة الدخول</h3>
+          <div class="sub-line">اعرضها عند البوابة. بتشتغل من غير نت.</div>
+
+          <div class="pass">
+            <div class="crest">
+              <svg aria-hidden="true" width="52" height="48" viewBox="0 0 220 200" fill="none">
+                <path d="M110 46 L54 10 L46 76 L8 68 L110 194 L212 68 L174 76 L166 10 Z"
+                      fill="rgba(23,10,41,.4)" stroke="#F7E7D3" stroke-width="9" stroke-linejoin="round"/>
+                <path d="M92 88 L74 52 M128 88 L146 52" stroke="#F7E7D3" stroke-width="12" stroke-linecap="round"/>
+                <circle cx="74" cy="48" r="7.5" fill="#F7E7D3"/><circle cx="146" cy="48" r="7.5" fill="#F7E7D3"/>
+                <circle cx="110" cy="62" r="12" fill="#F7E7D3"/>
+                <path d="M94 80 h32 l-7 30 h-18 Z" fill="#F7E7D3"/>
+                <path d="M110 116 l5 10 11 1.5 -8 7.8 1.9 11 -9.9-5.3 -9.9 5.3 1.9-11 -8-7.8 11-1.5 Z" fill="#E8722F"/>
+              </svg>
+            </div>
+            <div class="who">حازم الموجي</div>
+            <div class="idline">GC-2026-04871 · PLATINUM</div>
+
+            <div class="qr">
+              <canvas width="64" height="64" data-qr></canvas>
+              <div class="scan"></div>
+            </div>
+
+            <div class="pass-foot">
+              <div><span class="k">الفرع</span> <span class="v">العاشر من رمضان</span></div>
+              <div><span class="k">سارية لحد</span> <span class="v">12 سبتمبر</span></div>
+            </div>
+          </div>
+
+          <button class="btn btn-ghost" data-close style="width:100%;margin-top:16px">تمام</button>
+        </div>
+
+        <!-- ===== حسابي: where money now lives =====
+             Management's call: the member should not meet the bill on the
+             home screen. It is one tap away here, still complete, and the
+             expiry state is still stated in words rather than hidden. -->
+        <div class="sheet" data-sheet="account" aria-hidden="true">
+          <div class="grab"></div>
+          <h3>حسابي</h3>
+          <div class="sub-line">حازم الموجي · GC-2026-04871</div>
+
+          <div class="acct-block" data-membership>
+            <div class="mc-meta" style="margin-top:0">
+              <div>
+                <div class="k">العضوية</div>
+                <div class="v">بلاتينيوم · سنوية</div>
+              </div>
+              <div>
+                <div class="k">سارية لحد</div>
+                <div class="v warn">12 سبتمبر 2026</div>
+              </div>
+            </div>
+
+            <div class="mc-bar">
+              <div class="bar-track"><div class="bar-fill"></div></div>
+              <div class="bar-cap"><span>باقي 35 يوم على انتهاء الاشتراك</span><span>من 365 يوم</span></div>
+            </div>
+
+            <div class="mc-actions">
+              <button class="btn btn-primary" data-open="pay">
+                <svg aria-hidden="true" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1"
+                  stroke-linecap="round">
+                  <rect x="2" y="5" width="20" height="14" rx="2.5" />
+                  <path d="M2 10h20" />
+                </svg>
+                جدّد الاشتراك · 4,800 ج.م
+              </button>
+            </div>
+          </div>
+
+          <div class="set">
+            <div class="ico">
+              <svg aria-hidden="true" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#F7E7D3" stroke-width="1.9"
+                stroke-linecap="round">
+                <rect x="2" y="5" width="20" height="14" rx="2.5" />
+                <path d="M2 10h20" />
+                <path d="M6 15h4" />
+              </svg>
+            </div>
+            <div class="txt">
+              <div class="t1">المدفوعات والفواتير</div>
+              <div class="t2">سجل الدفع، الإيصالات، وطرق الدفع المحفوظة</div>
+            </div>
+            <svg aria-hidden="true" class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 6l-6 6 6 6" />
+            </svg>
+          </div>
+
+          <!-- Paper is a real club process: prize winners are told to visit
+               administration with an ID and a photo. It belongs in the app. -->
+          <div class="set">
+            <div class="ico">
+              <svg aria-hidden="true" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#F7E7D3" stroke-width="1.9"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2.5H6.5A1.5 1.5 0 0 0 5 4v16a1.5 1.5 0 0 0 1.5 1.5h11A1.5 1.5 0 0 0 19 20V7.5Z" />
+                <path d="M14 2.5V7.5H19" />
+                <path d="M9 13h6M9 16.5h4" />
+              </svg>
+            </div>
+            <div class="txt">
+              <div class="t1">الأوراق والمستندات</div>
+              <div class="t2">استمارة الاشتراك، صورة البطاقة، والشهادات الطبية</div>
+            </div>
+            <span class="pill due">ناقص 1</span>
+          </div>
+
+          <div class="set">
+            <div class="ico">
+              <svg aria-hidden="true" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#F7E7D3" stroke-width="1.9"
+                stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2.5" y="4.5" width="19" height="15" rx="2.5" />
+                <path d="M2.5 9.5h19" />
+                <path d="M6.5 14h4" />
+                <path d="M15 14h2.5" />
+              </svg>
+            </div>
+            <div class="txt">
+              <div class="t1">أقساط الأكاديميات</div>
+              <div class="t2">3 أقساط على الترم · القسط الجاي 15 أغسطس</div>
+            </div>
+            <span class="pill due">قسط مستحق</span>
+          </div>
+
+          <div class="set">
+            <div class="ico">
+              <svg aria-hidden="true" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#F7E7D3" stroke-width="1.9"
+                stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="8" cy="8" r="3.4" />
+                <path d="M2 20a6 6 0 0 1 12 0" />
+                <circle cx="17" cy="10" r="2.6" />
+                <path d="M14.4 20a5 5 0 0 1 7.6-4.3" />
+              </svg>
+            </div>
+            <div class="txt">
+              <div class="t1">أفراد العيلة وصلاحيات الدخول</div>
+              <div class="t2">3 أولاد · مين يقدر يدخل ويخرج إمتى</div>
+            </div>
+            <svg aria-hidden="true" class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 6l-6 6 6 6" />
+            </svg>
+          </div>
+
+          <div class="set">
+            <div class="ico">
+              <svg aria-hidden="true" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#F7E7D3" stroke-width="1.9"
+                stroke-linecap="round">
+                <path d="M18 8A6 6 0 1 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+                <path d="M13.7 21a2 2 0 0 1-3.4 0" />
+              </svg>
+            </div>
+            <div class="txt">
+              <div class="t1">الإشعارات</div>
+              <div class="t2">دخول وخروج الأولاد، الحجوزات، وأخبار النادي</div>
+            </div>
+            <svg aria-hidden="true" class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 6l-6 6 6 6" />
+            </svg>
+          </div>
+
+          <div class="set">
+            <div class="ico">
+              <svg aria-hidden="true" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#F7E7D3" stroke-width="1.9"
+                stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="9" />
+                <path d="M3 12h18" />
+                <path d="M12 3a15 15 0 0 1 0 18a15 15 0 0 1 0-18Z" />
+              </svg>
+            </div>
+            <div class="txt">
+              <div class="t1">اللغة</div>
+              <div class="t2">العربية</div>
+            </div>
+            <svg aria-hidden="true" class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 6l-6 6 6 6" />
+            </svg>
+          </div>
+
+          <button class="btn btn-ghost" data-close style="width:100%;margin-top:6px">تمام</button>
+        </div>
+
+        <!-- ===== Moment 2: the once-a-year renewal ===== -->
+        <div class="sheet" data-sheet="pay" aria-hidden="true">
+          <div class="grab"></div>
+
+          <div class="pay-stage on" data-stage="pick">
+            <h3>تجديد العضوية السنوية</h3>
+            <div class="sub-line">بلاتينيوم · سنة كاملة من يوم التجديد</div>
+
+            <div class="amount-row">
+              <span class="k">المبلغ المستحق</span>
+              <span class="v">4,800<small>ج.م</small></span>
+            </div>
+
+            <div role="radiogroup" aria-label="طريقة الدفع">
+              <button class="rail-opt" role="radio" aria-checked="true" data-rail="card">
+                <span class="mark">CARD</span>
+                <span>بطاقة بنكية أو ميزة
+                  <span class="t2">تأكيد من البنك، والتجديد يتم فوراً</span></span>
+                <span class="tick"><svg aria-hidden="true" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#2A1349"
+                    stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 12.5 9.5 18 20 6.5" />
+                  </svg></span>
+              </button>
+
+              <button class="rail-opt" role="radio" aria-checked="false" data-rail="instapay">
+                <span class="mark">IPN</span>
+                <span>إنستا باي
+                  <span class="t2">هتخرج لتطبيق البنك وترجع هنا</span></span>
+                <span class="tick"><svg aria-hidden="true" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#2A1349"
+                    stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 12.5 9.5 18 20 6.5" />
+                  </svg></span>
+              </button>
+
+              <button class="rail-opt" role="radio" aria-checked="false" data-rail="fawry">
+                <span class="mark">FWY</span>
+                <span>فوري
+                  <span class="t2">هنطلعلك كود تدفعه في أقرب منفذ</span></span>
+                <span class="tick"><svg aria-hidden="true" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#2A1349"
+                    stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 12.5 9.5 18 20 6.5" />
+                  </svg></span>
+              </button>
+
+              <button class="rail-opt" role="radio" aria-checked="false" data-rail="cash">
+                <span class="mark">CASH</span>
+                <span>كاش في الاستقبال
+                  <span class="t2">هنجهزلك رقم العملية وتدفع في النادي</span></span>
+                <span class="tick"><svg aria-hidden="true" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#2A1349"
+                    stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 12.5 9.5 18 20 6.5" />
+                  </svg></span>
+              </button>
+            </div>
+
+            <div style="display:flex;gap:9px;margin-top:16px">
+              <button class="btn btn-primary" data-pay style="flex:1">ادفع 4,800 ج.م</button>
+              <button class="btn btn-ghost" data-close>مش دلوقتي</button>
+            </div>
+          </div>
+
+          <div class="pay-stage" data-stage="working">
+            <div class="working">
+              <div class="spin"><i></i><i></i><i></i></div>
+              <div class="now" data-now>بنأمّن العملية</div>
+              <div class="step" data-step>1 / 3</div>
+            </div>
+          </div>
+
+          <div class="pay-stage" data-stage="done">
+            <div class="done">
+              <svg aria-hidden="true" class="seal" viewBox="0 0 220 200" fill="none">
+                <path d="M110 46 L54 10 L46 76 L8 68 L110 194 L212 68 L174 76 L166 10 Z"
+                      fill="rgba(75,42,123,.35)" stroke="currentColor" stroke-width="9" stroke-linejoin="round"/>
+                <path d="M92 88 L74 52 M128 88 L146 52" stroke="currentColor" stroke-width="12" stroke-linecap="round"/>
+                <circle cx="74" cy="48" r="7.5" fill="currentColor"/><circle cx="146" cy="48" r="7.5" fill="currentColor"/>
+                <circle cx="110" cy="62" r="12" fill="currentColor"/>
+                <path d="M94 80 h32 l-7 30 h-18 Z" fill="currentColor"/>
+                <path class="star" d="M110 116 l5 10 11 1.5 -8 7.8 1.9 11 -9.9-5.3 -9.9 5.3 1.9-11 -8-7.8 11-1.5 Z" fill="#E8722F"/>
+              </svg>
+              <h4>اتجددت. أهلاً بيك سنة جديدة يا بطل</h4>
+              <div class="counter" data-counter>0</div>
+              <div class="counter-cap">يوم عضوية قدامك</div>
+              <p data-receipt>إيصال العملية راح لبريدك · العضوية سارية لحد 12 سبتمبر 2027</p>
+              <button class="btn btn-primary" data-close style="width:100%;margin-top:18px">يلا بينا</button>
+            </div>
+          </div>
+
+          <div class="pay-stage" data-stage="code">
+            <h3 data-code-title>كود فوري جاهز</h3>
+            <div class="sub-line" data-code-sub>ادفع بالكود ده في أي منفذ فوري، والعضوية بتتجدد أول ما الدفع يوصلنا.</div>
+            <div class="code-box">
+              <div class="k" data-code-k>رقم الدفع</div>
+              <div class="code" data-code>0000 0000</div>
+            </div>
+            <p style="font-size:12px;color:var(--text-dim);line-height:1.9;margin-top:14px">
+              المبلغ: 4,800 ج.م · لو احتجت مساعدة كلّم الخط الساخن 17302.
+            </p>
+            <button class="btn btn-ghost" data-close style="width:100%;margin-top:16px">حفظت الكود</button>
+          </div>
+        </div>
+
+      </div>
+      <div class="screen-label">Home · Arabic RTL · Dark (primary)</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* The light theme is the exact same markup with the token layer re-pointed.
+   Cloning guarantees the two screens can never drift apart. */
+(function(){
+  var src = document.getElementById('screen-dark');
+  var copy = src.cloneNode(true);
+  copy.id = 'screen-light';
+  copy.querySelector('.phone-screen').classList.add('light');
+  var lbl = copy.querySelector('.screen-label');
+  if (lbl) lbl.textContent = 'Home · Arabic RTL · Light';
+  src.parentNode.appendChild(copy);
+
+  /* keep both screens scrolled together so comparison is honest */
+  var bodies = document.querySelectorAll('.app-body'), lock = false;
+  bodies.forEach(function(b){
+    b.addEventListener('scroll', function(){
+      if(lock) return; lock = true;
+      bodies.forEach(function(o){ if(o!==b) o.scrollTop = b.scrollTop; });
+      requestAnimationFrame(function(){ lock = false; });
+    });
+  });
+})();
+
+/* ============================================================
+   The three moments, wired. Every handler is scoped to its own
+   .phone-screen, so the dark and light copies behave independently.
+   ============================================================ */
+(function(){
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* --- deterministic block pattern standing in for the real member QR --- */
+  function drawPass(canvas, seed){
+    var ctx = canvas.getContext('2d'), N = 64, s = seed;
+    function rnd(){ s = (s * 1103515245 + 12345) & 0x7fffffff; return s / 0x7fffffff; }
+    ctx.fillStyle = '#F7E7D3'; ctx.fillRect(0,0,N,N);
+    ctx.fillStyle = '#1E0E33';
+    for(var y=0;y<N;y+=2) for(var x=0;x<N;x+=2){
+      if(rnd() > .48) ctx.fillRect(x,y,2,2);
+    }
+    /* finder squares, so it reads as a code and not as noise */
+    [[2,2],[54,2],[2,54]].forEach(function(p){
+      ctx.fillStyle='#F7E7D3'; ctx.fillRect(p[0]-1,p[1]-1,10,10);
+      ctx.fillStyle='#1E0E33'; ctx.fillRect(p[0],p[1],8,8);
+      ctx.fillStyle='#F7E7D3'; ctx.fillRect(p[0]+2,p[1]+2,4,4);
+      ctx.fillStyle='#1E0E33'; ctx.fillRect(p[0]+3,p[1]+3,2,2);
+    });
+  }
+  document.querySelectorAll('[data-qr]').forEach(function(c){ drawPass(c, 48711); });
+
+  function scope(el){ return el.closest('.phone-screen'); }
+
+  function openSheet(root, name){
+    var sh = root.querySelector('[data-sheet="'+name+'"]');
+    root.querySelector('.scrim').classList.add('on');
+    sh.classList.add('on'); sh.setAttribute('aria-hidden','false');
+  }
+  function closeSheets(root){
+    root.querySelector('.scrim').classList.remove('on');
+    root.querySelectorAll('.sheet').forEach(function(s){
+      s.classList.remove('on'); s.setAttribute('aria-hidden','true');
+    });
+    /* the renewal sheet always reopens at the top of the flow */
+    setTimeout(function(){ showStage(root, 'pick'); }, 420);
+  }
+  function showStage(root, name){
+    var pay = root.querySelector('[data-sheet="pay"]');
+    if(!pay) return;
+    pay.querySelectorAll(".pay-stage").forEach(function(st){
+      st.classList.toggle('on', st.dataset.stage === name);
+    });
+  }
+
+  document.addEventListener('click', function(e){
+    var open = e.target.closest('[data-open]');
+    if(open){ openSheet(scope(open), open.dataset.open); return; }
+
+    if(e.target.closest('[data-close]')){ closeSheets(scope(e.target)); return; }
+
+    var rail = e.target.closest('.rail-opt');
+    if(rail){
+      var root = scope(rail);
+      root.querySelectorAll('.rail-opt').forEach(function(r){
+        r.setAttribute('aria-checked', String(r === rail));
+      });
+      return;
+    }
+
+    var pay = e.target.closest('[data-pay]');
+    if(pay){ runPayment(scope(pay)); }
+  });
+
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape'){
+      document.querySelectorAll('.phone-screen').forEach(closeSheets);
+    }
+    if((e.key === 'Enter' || e.key === ' ') && e.target.dataset && e.target.dataset.open){
+      e.preventDefault(); openSheet(scope(e.target), e.target.dataset.open);
+    }
+  });
+
+  /* Each rail tells the truth about its own path. Fawry and cash end in a
+     reference to carry to a counter; they are not pretend receipts. */
+  var RAILS = {
+    card:     { steps:['بنأمّن العملية','تأكيد 3-D Secure من البنك','بنسجّل التجديد'], end:'done' },
+    instapay: { steps:['بنجهّز طلب الدفع','في انتظار التأكيد من تطبيق البنك','بنسجّل التجديد'], end:'done' },
+    fawry:    { steps:['بنطلب كود من فوري'], end:'code',
+                title:'كود فوري جاهز',
+                sub:'ادفع بالكود ده في أي منفذ فوري، والعضوية بتتجدد أول ما الدفع يوصلنا.',
+                k:'كود الدفع', code:'8342 1907' },
+    cash:     { steps:['بنسجّل العملية باسمك'], end:'code',
+                title:'العملية متسجلة باسمك',
+                sub:'روح الاستقبال وقول الرقم ده، وادفع المبلغ كاش.',
+                k:'رقم العملية', code:'GC 4871 26' }
+  };
+
+  function runPayment(root){
+    var railEl = root.querySelector('.rail-opt[aria-checked="true"]');
+    var rail = RAILS[railEl ? railEl.dataset.rail : 'card'];
+    showStage(root, 'working');
+
+    var now = root.querySelector('[data-now]'), step = root.querySelector('[data-step]');
+    var i = 0;
+    (function tick(){
+      now.textContent = rail.steps[i];
+      step.textContent = (i+1) + ' / ' + rail.steps.length;
+      i++;
+      if(i < rail.steps.length){ setTimeout(tick, reduce ? 300 : 900); }
+      else { setTimeout(function(){ finish(root, rail); }, reduce ? 300 : 900); }
+    })();
+  }
+
+  function finish(root, rail){
+    if(rail.end === 'code'){
+      root.querySelector('[data-code-title]').textContent = rail.title;
+      root.querySelector('[data-code-sub]').textContent = rail.sub;
+      root.querySelector('[data-code-k]').textContent = rail.k;
+      root.querySelector('[data-code]').textContent = rail.code;
+      showStage(root, 'code');
+      return;
+    }
+
+    showStage(root, 'done');
+    var done = root.querySelector('.done');
+    done.classList.remove('play'); void done.offsetWidth; done.classList.add('play');
+
+    /* count to the real number the member just bought */
+    var out = root.querySelector('[data-counter]'), target = 365;
+    if(reduce){ out.textContent = target; }
+    else {
+      var t0 = performance.now(), dur = 1100;
+      (function step(t){
+        var p = Math.min(1, (t - t0) / dur);
+        out.textContent = Math.round(target * (1 - Math.pow(1 - p, 3)));
+        if(p < 1) requestAnimationFrame(step);
+      })(t0);
+    }
+
+    /* membership lives in حسابي now, so that is the surface that updates */
+    var acct = root.querySelector('[data-membership]');
+    acct.querySelector('.bar-fill').style.width = '100%';
+    var exp = acct.querySelector('.mc-meta .v.warn');
+    exp.classList.remove('warn');
+    exp.textContent = '12 سبتمبر 2027';
+    acct.querySelector('.bar-cap').innerHTML =
+      '<span>عضويتك سارية سنة كاملة</span><span>365 من 365 يوم</span>';
+    acct.querySelector('.btn-primary').outerHTML =
+      '<div class="pill ok" style="align-self:flex-start">مدفوعة لحد 12 سبتمبر 2027</div>';
+    acct.classList.remove('renewed'); void acct.offsetWidth; acct.classList.add('renewed');
+  }
+})();
+</script>
+
+<!-- ============ Style guide ============ -->
+<section class="guide">
+  <h2>Design System - extracted from Glory key visuals</h2>
+
+  <div class="swatches">
+    <div class="sw"><div class="chip" style="background:#4B2A7B"></div><div class="lbl"><b>Glory Purple</b><span>#4B2A7B</span></div></div>
+    <div class="sw"><div class="chip" style="background:#3A1D63"></div><div class="lbl"><b>Purple 700</b><span>#3A1D63</span></div></div>
+    <div class="sw"><div class="chip" style="background:#1E0E33"></div><div class="lbl"><b>Purple 850</b><span>#1E0E33</span></div></div>
+    <div class="sw"><div class="chip" style="background:#E8722F"></div><div class="lbl"><b>Glory Orange</b><span>#E8722F</span></div></div>
+    <div class="sw"><div class="chip" style="background:#F7A863"></div><div class="lbl"><b>Orange 300</b><span>#F7A863</span></div></div>
+    <div class="sw"><div class="chip" style="background:#F7E7D3"></div><div class="lbl"><b>Glory Cream</b><span>#F7E7D3</span></div></div>
+    <div class="sw"><div class="chip" style="background:#3FBF7F"></div><div class="lbl"><b>Success</b><span>#3FBF7F</span></div></div>
+    <div class="sw"><div class="chip" style="background:#E4572E"></div><div class="lbl"><b>Danger</b><span>#E4572E</span></div></div>
+  </div>
+
+  <div class="type-row">
+    <div>
+      <div style="font-family:'Barlow Condensed';font-size:44px;font-weight:800;letter-spacing:.06em;line-height:1">GLORY 17302</div>
+      <p>Display / numerals - Barlow Condensed 800 (stand-in for the wordmark's condensed athletic face)</p>
+    </div>
+    <div>
+      <div dir="rtl" style="font-family:'Cairo';font-size:30px;font-weight:900">نادي للبطل</div>
+      <p>Arabic display - Cairo 900 (stand-in for the marketing headline face)</p>
+    </div>
+    <div>
+      <div dir="rtl" style="font-family:'Cairo';font-size:15px;font-weight:400;max-width:230px;line-height:1.9">نص الواجهة الأساسي، مقروء على الخلفية البنفسجية العميقة.</div>
+      <p>UI text - Cairo 400/600/700</p>
+    </div>
+  </div>
+
+  <div class="note">
+    <b>Rules applied.</b>
+    Purple carries surface and depth, orange is reserved for a single action per view (open the gate), cream carries all reading text.
+    Radii stay tight (10–22px) so the angular crest language holds.
+    The triangle texture from the posts is reused at 4.5% opacity as card fill, never as page background.
+    Contrast: cream on purple-850 = 12.4:1, dark-on-orange CTA = 5.4:1, orange ink #B44E14 on cream = 5.1:1. Secondary text
+    (--text-dim, --text-mute) is still below 4.5:1 and is being retuned.
+    RTL-first with logical properties (<code>inset-inline</code>, <code>margin-inline</code>) so an LTR English build mirrors with no CSS forks.
+  </div>
+</section>
+
+</body>
+</html>

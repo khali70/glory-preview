@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GLORY CLUB - four directions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Barlow+Condensed:wght@500;600;700;800&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   GLORY CLUB - four candidate visual worlds for the same
+   home screen. Identical content in all eight screens, so the
+   comparison is about design and nothing else.
+
+   Fixed across every direction (the club's own identity):
+     purple, orange, cream, the crest, angular geometry,
+     Arabic-first RTL, hotline 17302.
+   Varying: hierarchy, topology, density, type, colour strategy.
+   ============================================================ */
+:root{
+  --purple-900:#170A29; --purple-850:#1E0E33; --purple-800:#2A1349;
+  --purple-700:#3A1D63; --purple-600:#4B2A7B; --purple-500:#5E3795;
+  --orange-600:#D9611F; --orange-500:#E8722F; --orange-400:#F28C42; --orange-300:#F7A863;
+  --cream:#F7E7D3; --paper:#FBF4EA;
+  --ok:#3FBF7F; --warn:#F2C14E; --danger:#E4572E;
+  --ar:'Cairo',system-ui,sans-serif;
+  --cond:'Barlow Condensed','Arial Narrow',sans-serif;
+  --serif:'Amiri',Georgia,serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{
+  font-family:var(--ar);background:#0E0619;color:var(--cream);
+  padding:48px 20px 90px;
+}
+
+/* ---------- page chrome ---------- */
+.head{max-width:900px;margin:0 auto 8px;text-align:center}
+.head h1{font-size:30px;font-weight:900;letter-spacing:-.01em}
+.head p{color:rgba(247,231,211,.62);font-size:14.5px;line-height:1.9;margin-top:12px}
+.head .fixed{
+  margin:26px auto 0;max-width:760px;padding:14px 18px;border-radius:14px;
+  background:rgba(255,255,255,.045);border:1px solid rgba(247,231,211,.14);
+  font-size:12.5px;line-height:2;color:rgba(247,231,211,.72);
+}
+.head .fixed b{color:var(--cream)}
+
+.band{max-width:1180px;margin:74px auto 0}
+.band-head{display:flex;align-items:flex-start;gap:18px;margin-bottom:26px;flex-wrap:wrap}
+.band-letter{
+  font-family:var(--cond);font-size:60px;font-weight:800;line-height:.8;
+  color:var(--orange-500);flex:0 0 auto;
+}
+.band-title h2{font-size:23px;font-weight:900}
+.band-title .fam{font-size:13.5px;color:rgba(247,231,211,.66);margin-top:7px;line-height:1.8;max-width:640px}
+.band-title .axis{
+  display:inline-block;margin-top:11px;padding:5px 11px;border-radius:99px;
+  background:rgba(232,114,47,.14);border:1px solid rgba(232,114,47,.34);
+  font-size:11.5px;font-weight:700;color:var(--orange-300);
+}
+.pair{display:flex;gap:38px;flex-wrap:wrap;justify-content:center}
+.slot{text-align:center}
+.slot .cap{
+  margin-top:13px;font-family:var(--cond);letter-spacing:.2em;text-transform:uppercase;
+  font-size:11.5px;color:rgba(247,231,211,.4);
+}
+
+/* ---------- device ---------- */
+.phone{
+  width:376px;height:812px;border-radius:44px;background:#000;padding:9px;
+  position:relative;box-shadow:0 40px 90px -34px rgba(0,0,0,.95),0 0 0 1px rgba(247,231,211,.1);
+}
+.notch{position:absolute;top:11px;left:50%;transform:translateX(-50%);
+  width:104px;height:26px;background:#000;border-radius:99px;z-index:60}
+.scr{
+  width:100%;height:100%;border-radius:36px;overflow:hidden;position:relative;
+  display:flex;flex-direction:column;background:var(--bg);color:var(--fg);
+}
+.sb{
+  height:50px;flex:0 0 auto;display:flex;align-items:flex-end;justify-content:space-between;
+  padding:0 24px 5px;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:600;
+  direction:ltr;letter-spacing:.03em;opacity:.9;
+}
+.body{flex:1;overflow-y:auto;scrollbar-width:none;padding-bottom:92px}
+.body::-webkit-scrollbar{display:none}
+.nav{
+  position:absolute;bottom:0;inset-inline:0;height:78px;z-index:40;
+  display:flex;align-items:flex-start;justify-content:space-around;padding:13px 12px 0;
+  background:var(--navbg);border-top:1px solid var(--hair);
+}
+.nav b{
+  flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;
+  font-size:9.5px;font-weight:600;color:var(--dim);
+}
+.nav b.on{color:var(--accent)}
+.ind{position:absolute;bottom:7px;left:50%;transform:translateX(-50%);
+  width:124px;height:5px;border-radius:99px;background:var(--dim);opacity:.5;z-index:50}
+svg{display:block}
+
+/* ============================================================
+   A. THE CHAMPION'S LOCKER ROOM
+   Dense, hard, engraved. Nothing floats. Hairlines do the
+   dividing. The nameplate is the loudest object on screen.
+   ============================================================ */
+[data-dir="a"]{
+  --bg:#140A22; --fg:#F7E7D3; --dim:rgba(247,231,211,.4);
+  --hair:rgba(247,231,211,.13); --accent:var(--orange-500);
+  --panel:#1C0E2E; --navbg:#100718;
+}
+[data-dir="a"][data-theme="light"]{
+  --bg:#E9E2D8; --fg:#241038; --dim:rgba(36,16,56,.45);
+  --hair:rgba(36,16,56,.16); --accent:#B44E14;
+  --panel:#DED5C8; --navbg:#E3DBD0;
+}
+[data-dir="a"] .plate{
+  margin:0 16px;padding:20px 18px;background:var(--panel);
+  border:1px solid var(--hair);position:relative;
+  box-shadow:inset 0 1px 0 rgba(247,231,211,.09);
+}
+[data-dir="a"][data-theme="light"] .plate{box-shadow:inset 0 1px 0 rgba(255,255,255,.7)}
+[data-dir="a"] .plate::before{ /* the two rivets of a locker nameplate */
+  content:"";position:absolute;top:9px;inset-inline:9px;height:5px;
+  background:radial-gradient(circle 2.5px at 2.5px 2.5px,var(--hair) 99%,transparent 100%) left top/26px 5px repeat-x,
+             radial-gradient(circle 2.5px at 2.5px 2.5px,var(--hair) 99%,transparent 100%) right top/26px 5px repeat-x;
+  background-repeat:no-repeat;background-size:5px 5px;
+  background-position:left top,right top;
+}
+[data-dir="a"] .plate .tier{
+  font-family:var(--cond);font-size:12px;letter-spacing:.28em;text-transform:uppercase;
+  color:var(--accent);font-weight:700;
+}
+[data-dir="a"] .plate .nm{font-size:24px;font-weight:900;margin-top:5px;letter-spacing:-.01em}
+[data-dir="a"] .plate .id{
+  font-family:var(--cond);font-size:13px;letter-spacing:.22em;color:var(--dim);
+  direction:ltr;text-align:start;margin-top:3px;
+}
+[data-dir="a"] .stat{
+  display:flex;border-top:1px solid var(--hair);margin-top:16px;padding-top:14px;
+}
+[data-dir="a"] .stat div{flex:1}
+[data-dir="a"] .stat div+div{border-inline-start:1px solid var(--hair);padding-inline-start:14px}
+[data-dir="a"] .stat .k{font-size:10.5px;color:var(--dim);letter-spacing:.03em}
+[data-dir="a"] .stat .v{font-family:var(--cond);font-size:26px;font-weight:800;line-height:1.1;margin-top:3px}
+[data-dir="a"] .stat .v small{font-family:var(--ar);font-size:11px;font-weight:700}
+[data-dir="a"] .cta{
+  display:block;width:calc(100% - 32px);margin:14px 16px 0;padding:15px;border:0;cursor:pointer;
+  background:var(--accent);color:#180B26;font-family:var(--ar);font-size:14.5px;font-weight:800;
+  clip-path:polygon(0 0,100% 0,100% 72%,calc(100% - 16px) 100%,0 100%);
+}
+[data-dir="a"] .lockers{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;
+  background:var(--hair);border-block:1px solid var(--hair);margin-top:22px}
+[data-dir="a"] .lk{
+  background:var(--bg);padding:16px 14px;display:flex;align-items:center;gap:11px;
+}
+[data-dir="a"] .lk .n{font-family:var(--cond);font-size:13px;color:var(--dim);letter-spacing:.1em}
+[data-dir="a"] .lk .t{font-size:12.5px;font-weight:700;line-height:1.4}
+[data-dir="a"] .rows{margin-top:22px;padding:0 16px}
+[data-dir="a"] .hd{
+  font-family:var(--cond);font-size:13px;letter-spacing:.24em;text-transform:uppercase;
+  color:var(--dim);padding-bottom:9px;border-bottom:1px solid var(--hair);
+}
+[data-dir="a"] .rw{
+  display:flex;align-items:center;gap:11px;padding:13px 0;border-bottom:1px solid var(--hair);
+}
+[data-dir="a"] .rw .t1{font-size:13.5px;font-weight:700}
+[data-dir="a"] .rw .t2{font-size:11px;color:var(--dim);margin-top:3px}
+[data-dir="a"] .rw .tag{
+  margin-inline-start:auto;font-family:var(--cond);font-size:12px;letter-spacing:.14em;
+  text-transform:uppercase;font-weight:700;padding:3px 8px;border:1px solid currentColor;
+}
+[data-dir="a"] .notice{
+  margin:22px 16px 0;padding:13px 14px;border:1px solid var(--accent);
+  display:flex;gap:11px;align-items:flex-start;
+}
+[data-dir="a"] .notice .t{font-size:12.5px;line-height:1.7}
+[data-dir="a"] .hot{
+  margin-top:22px;padding:16px;border-top:1px solid var(--hair);
+  display:flex;justify-content:space-between;align-items:center;
+}
+[data-dir="a"] .hot .n{font-family:var(--cond);font-size:30px;font-weight:800;letter-spacing:.1em;color:var(--accent);direction:ltr}
+
+/* ============================================================
+   B. THE FLOODLIT PITCH
+   One light source, top right. The number of days you have left
+   is the hero. Everything else recedes into the dark.
+   ============================================================ */
+[data-dir="b"]{
+  --bg:#0C0518; --fg:#F7E7D3; --dim:rgba(247,231,211,.34);
+  --hair:rgba(247,231,211,.09); --accent:var(--orange-400);
+  --navbg:rgba(12,5,24,.94);
+}
+[data-dir="b"][data-theme="light"]{
+  --bg:#EFE7DC; --fg:#1E0E33; --dim:rgba(30,14,51,.42);
+  --hair:rgba(30,14,51,.11); --accent:#C2551A;
+  --navbg:rgba(239,231,220,.94);
+}
+[data-dir="b"] .beam{position:relative;padding:26px 20px 0;overflow:hidden}
+[data-dir="b"] .beam::before{ /* the floodlight */
+  content:"";position:absolute;inset-inline-end:-90px;top:-160px;width:360px;height:360px;
+  background:radial-gradient(circle,rgba(242,140,66,.5),rgba(242,140,66,.13) 42%,transparent 68%);
+}
+[data-dir="b"][data-theme="light"] .beam::before{
+  background:radial-gradient(circle,rgba(232,114,47,.32),rgba(232,114,47,.08) 42%,transparent 68%);
+}
+[data-dir="b"] .beam>*{position:relative}
+[data-dir="b"] .lede{font-size:13px;color:var(--dim)}
+[data-dir="b"] .huge{
+  font-family:var(--cond);font-size:132px;font-weight:800;line-height:.82;
+  letter-spacing:-.02em;margin-top:6px;
+}
+[data-dir="b"] .huge span{color:var(--accent)}
+[data-dir="b"] .under{font-size:15px;font-weight:700;margin-top:10px}
+[data-dir="b"] .under em{font-style:normal;color:var(--accent)}
+[data-dir="b"] .meta{font-size:12px;color:var(--dim);margin-top:7px;line-height:1.8}
+[data-dir="b"] .cta{
+  margin-top:20px;width:100%;padding:16px;border:0;cursor:pointer;border-radius:2px;
+  background:var(--accent);color:#160A24;font-family:var(--ar);font-size:15px;font-weight:800;
+  box-shadow:0 16px 40px -14px rgba(242,140,66,.85);
+}
+[data-dir="b"] .strip{
+  display:flex;gap:9px;overflow-x:auto;scrollbar-width:none;padding:22px 20px 0;
+}
+[data-dir="b"] .strip::-webkit-scrollbar{display:none}
+[data-dir="b"] .chip{
+  flex:0 0 auto;padding:10px 15px;border:1px solid var(--hair);border-radius:99px;
+  font-size:12px;font-weight:700;color:var(--fg);white-space:nowrap;background:transparent;
+}
+[data-dir="b"] .chip.hi{border-color:var(--accent);color:var(--accent)}
+[data-dir="b"] .sec{padding:26px 20px 0}
+[data-dir="b"] .sec h4{font-size:13px;font-weight:700;color:var(--dim);margin-bottom:12px}
+[data-dir="b"] .ln{
+  display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid var(--hair);
+}
+[data-dir="b"] .ln .t1{font-size:14px;font-weight:700}
+[data-dir="b"] .ln .t2{font-size:11.5px;color:var(--dim);margin-top:3px}
+[data-dir="b"] .ln .amt{margin-inline-start:auto;font-family:var(--cond);font-size:19px;font-weight:700}
+[data-dir="b"] .ln .amt.due{color:var(--accent)}
+[data-dir="b"] .rim{ /* rim-lit card: the light catches one edge only */
+  margin:26px 20px 0;padding:18px;border-radius:3px;position:relative;
+  background:linear-gradient(160deg,rgba(247,231,211,.075),transparent 70%);
+  border-top:1px solid rgba(247,231,211,.24);
+}
+[data-dir="b"][data-theme="light"] .rim{
+  background:linear-gradient(160deg,rgba(30,14,51,.06),transparent 70%);
+  border-top-color:rgba(30,14,51,.2);
+}
+[data-dir="b"] .rim .k{font-size:11px;color:var(--dim);letter-spacing:.04em}
+[data-dir="b"] .rim .v{font-size:15px;font-weight:700;margin-top:6px;line-height:1.6}
+[data-dir="b"] .hot{padding:26px 20px 0;display:flex;justify-content:space-between;align-items:center}
+[data-dir="b"] .hot .n{font-family:var(--cond);font-size:32px;font-weight:800;letter-spacing:.1em;color:var(--accent);direction:ltr}
+
+/* ============================================================
+   C. THE MEMBERS' CREST
+   Paper first. The club as an institution: a seal, ruled
+   ledger rows, leader dots, and a formal Arabic face.
+   ============================================================ */
+[data-dir="c"]{
+  --bg:#FBF4EA; --fg:#241038; --dim:rgba(36,16,56,.5);
+  --hair:rgba(36,16,56,.18); --accent:#B44E14; --navbg:#F5ECE0;
+}
+[data-dir="c"][data-theme="dark"]{
+  --bg:#1B0E2C; --fg:#F2E4D2; --dim:rgba(242,228,210,.5);
+  --hair:rgba(242,228,210,.2); --accent:var(--orange-300); --navbg:#160B24;
+}
+[data-dir="c"] .body{font-family:var(--serif)}
+[data-dir="c"] .seal{
+  text-align:center;padding:24px 20px 20px;border-bottom:2px solid var(--hair);
+  position:relative;
+}
+[data-dir="c"] .seal::after{
+  content:"";position:absolute;bottom:-5px;inset-inline:0;height:1px;background:var(--hair);
+}
+[data-dir="c"] .seal .club{
+  font-family:var(--cond);font-size:12.5px;letter-spacing:.42em;text-transform:uppercase;
+  color:var(--dim);margin-top:12px;
+}
+[data-dir="c"] .seal .nm{font-size:26px;font-weight:700;margin-top:14px}
+[data-dir="c"] .seal .rank{
+  display:inline-block;margin-top:9px;padding:4px 14px;border:1px solid var(--accent);
+  color:var(--accent);font-family:var(--cond);font-size:12.5px;letter-spacing:.24em;
+  text-transform:uppercase;font-weight:700;
+}
+[data-dir="c"] .ledger{padding:20px}
+[data-dir="c"] .lg{
+  display:flex;align-items:baseline;gap:8px;padding:11px 0;
+}
+[data-dir="c"] .lg+.lg{border-top:1px solid var(--hair)}
+[data-dir="c"] .lg .k{font-size:14.5px}
+[data-dir="c"] .lg .dots{
+  flex:1;border-bottom:1.5px dotted var(--hair);transform:translateY(-4px);min-width:18px;
+}
+[data-dir="c"] .lg .v{font-size:14.5px;font-weight:700;white-space:nowrap}
+[data-dir="c"] .lg .v.due{color:var(--accent)}
+[data-dir="c"] .cta{
+  display:block;width:calc(100% - 40px);margin:6px 20px 0;padding:15px;cursor:pointer;
+  background:transparent;border:1.5px solid var(--accent);color:var(--accent);
+  font-family:var(--cond);font-size:16px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;
+}
+[data-dir="c"] .rule{
+  margin:26px 20px 0;font-family:var(--cond);font-size:12.5px;letter-spacing:.28em;
+  text-transform:uppercase;color:var(--dim);padding-bottom:8px;border-bottom:1px solid var(--hair);
+}
+[data-dir="c"] .art{padding:0 20px}
+[data-dir="c"] .ar{padding:14px 0;border-bottom:1px solid var(--hair);display:flex;gap:12px;align-items:baseline}
+[data-dir="c"] .ar .no{font-family:var(--cond);font-size:14px;color:var(--dim);letter-spacing:.08em;flex:0 0 auto}
+[data-dir="c"] .ar .t1{font-size:15px;font-weight:700}
+[data-dir="c"] .ar .t2{font-size:12.5px;color:var(--dim);margin-top:4px;line-height:1.7}
+[data-dir="c"] .ar .st{
+  margin-inline-start:auto;font-family:var(--cond);font-size:12px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--accent);white-space:nowrap;
+}
+[data-dir="c"] .notice{
+  margin:24px 20px 0;padding:14px 16px;border:1px solid var(--hair);border-inline-start:3px solid var(--accent);
+}
+[data-dir="c"] .notice .t{font-size:13.5px;line-height:1.8}
+[data-dir="c"] .hot{
+  margin-top:26px;padding:18px 20px;border-top:2px solid var(--hair);text-align:center;
+}
+[data-dir="c"] .hot .n{font-family:var(--cond);font-size:30px;font-weight:800;letter-spacing:.14em;color:var(--accent);direction:ltr}
+[data-dir="c"] .hot .k{font-size:12.5px;color:var(--dim);margin-top:3px}
+
+/* ============================================================
+   D. THE EGYPTIAN SPORTS DAY
+   The ratio flips: orange is the field, purple is the ink.
+   Grid of tiles, sticker badges, loud and family facing.
+   ============================================================ */
+[data-dir="d"]{
+  --bg:#E8722F; --fg:#2A1349; --dim:rgba(42,19,73,.62);
+  --hair:rgba(42,19,73,.16); --accent:#2A1349; --navbg:#DA6524;
+}
+[data-dir="d"][data-theme="dark"]{
+  --bg:#2A1349; --fg:#F7E7D3; --dim:rgba(247,231,211,.6);
+  --hair:rgba(247,231,211,.16); --accent:var(--orange-400); --navbg:#1E0E33;
+}
+[data-dir="d"] .top{padding:18px 18px 0;display:flex;align-items:center;gap:12px}
+[data-dir="d"] .top .hi{font-size:12.5px;color:var(--dim)}
+[data-dir="d"] .top .nm{font-size:19px;font-weight:900;margin-top:1px}
+[data-dir="d"] .card{
+  margin:16px 18px 0;padding:18px;border-radius:20px;background:var(--tile);
+  color:var(--tilefg);position:relative;overflow:hidden;
+}
+[data-dir="d"]{--tile:#FBF4EA;--tilefg:#2A1349}
+[data-dir="d"][data-theme="dark"]{--tile:#3A1D63;--tilefg:#F7E7D3}
+[data-dir="d"] .card .row{display:flex;justify-content:space-between;align-items:flex-start}
+[data-dir="d"] .sticker{
+  padding:5px 12px;border-radius:99px;background:var(--bg);color:var(--fg);
+  font-size:11px;font-weight:900;transform:rotate(-3deg);
+}
+[data-dir="d"] .card .big{font-family:var(--cond);font-size:46px;font-weight:800;line-height:1;margin-top:12px}
+[data-dir="d"] .card .big small{font-family:var(--ar);font-size:14px;font-weight:700}
+[data-dir="d"] .card .cap{font-size:12.5px;color:var(--dim);margin-top:6px}
+[data-dir="d"] .cta{
+  width:100%;margin-top:15px;padding:15px;border:0;border-radius:14px;cursor:pointer;
+  background:var(--bg);color:var(--fg);font-family:var(--ar);font-size:14.5px;font-weight:900;
+}
+[data-dir="d"][data-theme="dark"] .cta{background:var(--orange-500);color:#2A1349}
+[data-dir="d"] .grid{display:grid;grid-template-columns:1fr 1fr;gap:11px;padding:20px 18px 0}
+[data-dir="d"] .tile{
+  border-radius:18px;background:var(--tile);color:var(--tilefg);padding:15px;
+  min-height:104px;display:flex;flex-direction:column;justify-content:space-between;
+}
+[data-dir="d"] .tile.wide{grid-column:1 / -1;min-height:0;flex-direction:row;align-items:center;gap:12px}
+[data-dir="d"] .tile .t{font-size:14px;font-weight:900;line-height:1.35}
+[data-dir="d"] .tile .s{font-size:11.5px;color:var(--dim);margin-top:4px}
+[data-dir="d"] .hdr{padding:24px 18px 0;font-size:16px;font-weight:900}
+[data-dir="d"] .lst{padding:12px 18px 0}
+[data-dir="d"] .it{
+  display:flex;align-items:center;gap:12px;padding:13px 15px;border-radius:16px;
+  background:var(--tile);color:var(--tilefg);margin-bottom:10px;
+}
+[data-dir="d"] .it .t1{font-size:13.5px;font-weight:800}
+[data-dir="d"] .it .t2{font-size:11px;color:var(--dim);margin-top:3px}
+[data-dir="d"] .it .b{
+  margin-inline-start:auto;font-size:11px;font-weight:900;padding:5px 11px;border-radius:99px;
+  background:var(--bg);color:var(--fg);white-space:nowrap;
+}
+[data-dir="d"] .hot{
+  margin:22px 18px 0;padding:16px;border-radius:18px;background:var(--tile);color:var(--tilefg);
+  display:flex;justify-content:space-between;align-items:center;
+}
+[data-dir="d"] .hot .n{font-family:var(--cond);font-size:30px;font-weight:800;letter-spacing:.1em;direction:ltr}
+
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<header class="head">
+  <h1>نادي جلوري - أربع اتجاهات لنفس الشاشة</h1>
+  <p>
+    نفس المحتوى بالظبط في الثمن شاشات: نفس العضو، نفس المبلغ، نفس الأخبار.
+    اللي بيتغير هو التصميم بس، عشان المقارنة تكون عادلة.
+  </p>
+  <div class="fixed">
+    <b>الثابت في كل اتجاه:</b> البنفسجي والبرتقالي والكريمي، شعار الدرع، الهندسة الحادة،
+    العربي أولاً من اليمين للشمال، والخط الساخن 17302.
+    <br>
+    <b>المتغير:</b> ترتيب الأهمية، شكل الصفحة، الكثافة، الخطوط، ودور اللون.
+  </div>
+</header>
+
+<div id="stage"></div>
+
+<script>
+/* ------------------------------------------------------------
+   One content object. Every direction renders the same facts,
+   so nothing in the comparison comes from richer copy.
+   Figures are placeholders; the club has not published prices.
+   ------------------------------------------------------------ */
+var M = {
+  name:'حازم الموجي',
+  id:'GC-2026-04871',
+  tier:'بلاتينيوم',
+  days:35, total:365,
+  due:'4,800',
+  renew:'12 سبتمبر 2026',
+  notice:'حمامات السباحة مقفولة النهاردة للصيانة الدورية. هنبلغكم أول ما تفتح.',
+  event:'ليلة العدوية ومحمد نور',
+  eventWhen:'الخميس 8:30 م · الساحة',
+  subs:[
+    {t:'العضوية السنوية · بلاتينيوم', s:'تنتهي 12 سبتمبر · 4,800 ج.م', st:'مستحق', kind:'due'},
+    {t:'أكاديمية كرة القدم · براعم', s:'3 حصص في الأسبوع · مدفوع', st:'نشط', kind:'ok'},
+    {t:'اشتراك الجيم · 3 شهور', s:'انتهى 1 أغسطس', st:'منتهي', kind:'exp'}
+  ],
+  quick:[
+    {t:'الأسعار والشروط', s:'كل الاشتراكات'},
+    {t:'حجز ملعب', s:'بادل وتنس وكرة'},
+    {t:'الأكاديميات', s:'15 لعبة'},
+    {t:'بطاقة الدخول', s:'كود البوابة'}
+  ],
+  book:{t:'ملعب بادل 2', s:'النهاردة 7:00 م لحد 8:30 م'}
+};
+
+/* the crest, one drawing, recoloured per direction */
+function crest(size, stroke, star){
+  return '<svg width="'+size+'" height="'+(size*0.91)+'" viewBox="0 0 220 200" fill="none">'
+   +'<path d="M110 46 L54 10 L46 76 L8 68 L110 194 L212 68 L174 76 L166 10 Z" fill="none" stroke="'+stroke+'" stroke-width="9" stroke-linejoin="round"/>'
+   +'<path d="M92 88 L74 52 M128 88 L146 52" stroke="'+stroke+'" stroke-width="12" stroke-linecap="round"/>'
+   +'<circle cx="74" cy="48" r="7.5" fill="'+stroke+'"/><circle cx="146" cy="48" r="7.5" fill="'+stroke+'"/>'
+   +'<circle cx="110" cy="62" r="12" fill="'+stroke+'"/><path d="M94 80 h32 l-7 30 h-18 Z" fill="'+stroke+'"/>'
+   +'<path d="M110 116 l5 10 11 1.5 -8 7.8 1.9 11 -9.9-5.3 -9.9 5.3 1.9-11 -8-7.8 11-1.5 Z" fill="'+star+'"/></svg>';
+}
+function ico(d, c, w){
+  return '<svg width="'+(w||20)+'" height="'+(w||20)+'" viewBox="0 0 24 24" fill="none" stroke="'+c+'" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">'+d+'</svg>';
+}
+var I = {
+  home:'<path d="M3 10.5 12 3l9 7.5"/><path d="M5.5 9.5V20h13V9.5"/>',
+  cal :'<rect x="3" y="4" width="18" height="17" rx="2.5"/><path d="M8 2v4M16 2v4M3 10h18"/>',
+  qr  :'<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><path d="M14 14h3v3h-3zM20 14h1M14 20h3M20 20h1"/>',
+  pay :'<rect x="2" y="5" width="20" height="14" rx="2.5"/><path d="M2 10h20"/>',
+  me  :'<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',
+  tag :'<path d="M3 12.5V4.5A1.5 1.5 0 0 1 4.5 3h8l8.5 8.5a1.5 1.5 0 0 1 0 2.1l-6.4 6.4a1.5 1.5 0 0 1-2.1 0z"/><circle cx="7.8" cy="7.8" r="1.4"/>',
+  ball:'<circle cx="12" cy="12" r="9"/><path d="M12 7.6l3.6 2.6-1.4 4.3h-4.4L8.4 10.2z"/><path d="M12 3v4.6M4.4 9.6l4 .6M19.6 9.6l-4 .6M7.2 19.4l3-4.9M16.8 19.4l-3-4.9"/>',
+  gym :'<path d="M5.5 9v6M8.5 6.5v11M15.5 6.5v11M18.5 9v6M8.5 12h7M2.5 10.5v3M21.5 10.5v3"/>',
+  card:'<rect x="2.5" y="4.5" width="19" height="15" rx="2.5"/><path d="M2.5 9.5h19M6 14.5h5"/>',
+  warn:'<path d="M12 3.5 22 20H2z"/><path d="M12 10v4M12 16.8v.2"/>',
+  star:'<path d="m12 3.6 2.7 5.5 6 .9-4.35 4.2 1.03 6L12 17.4 6.62 20.2l1.03-6L3.3 10l6-.9z"/>'
+};
+
+function bar(theme){
+  return '<div class="sb"><span>9:41</span><span>'
+   +'<svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><rect y="7" width="3" height="4" rx="1"/><rect x="4.5" y="5" width="3" height="6" rx="1"/><rect x="9" y="2.5" width="3" height="8.5" rx="1"/><rect x="13.5" width="3" height="11" rx="1"/></svg>'
+   +'</span></div>';
+}
+function nav(items, accent, dim){
+  return '<nav class="nav">'+items.map(function(it,i){
+    return '<b class="'+(i===0?'on':'')+'">'+ico(I[it[0]], i===0?accent:dim)+'<span>'+it[1]+'</span></b>';
+  }).join('')+'</nav><div class="ind"></div>';
+}
+var NAV = [['home','الرئيسية'],['cal','الحجوزات'],['qr','بطاقتي'],['pay','المدفوعات'],['me','حسابي']];
+
+/* ---------------- A ---------------- */
+function dirA(t){
+  var line = t==='light' ? '#241038' : '#F7E7D3';
+  var acc  = t==='light' ? '#B44E14' : '#E8722F';
+  var dim  = t==='light' ? 'rgba(36,16,56,.45)' : 'rgba(247,231,211,.4)';
+  return bar(t)+'<div class="body">'
+  +'<div style="display:flex;align-items:center;justify-content:space-between;padding:8px 16px 16px">'
+    +'<div style="display:flex;align-items:center;gap:10px">'+crest(30,line,acc)
+    +'<span style="font-family:var(--cond);font-size:15px;letter-spacing:.3em;text-transform:uppercase;font-weight:700">Glory</span></div>'
+    +'<div style="font-family:var(--cond);font-size:13px;letter-spacing:.18em;color:'+dim+'">10TH OF RAMADAN</div>'
+  +'</div>'
+
+  +'<div class="plate">'
+    +'<div class="tier">Member · '+M.tier+'</div>'
+    +'<div class="nm">'+M.name+'</div>'
+    +'<div class="id">'+M.id+'</div>'
+    +'<div class="stat">'
+      +'<div><div class="k">باقي على التجديد</div><div class="v">'+M.days+' <small>يوم</small></div></div>'
+      +'<div><div class="k">المستحق</div><div class="v">'+M.due+' <small>ج.م</small></div></div>'
+    +'</div>'
+  +'</div>'
+  +'<button class="cta">جدّد الاشتراك دلوقتي</button>'
+
+  +'<div class="lockers">'+M.quick.map(function(q,i){
+      return '<div class="lk">'+ico([I.tag,I.cal,I.ball,I.qr][i], acc)
+       +'<div><div class="t">'+q.t+'</div><div class="n">'+q.s+'</div></div></div>';
+    }).join('')+'</div>'
+
+  +'<div class="notice">'+ico(I.warn,acc,18)+'<div class="t">'+M.notice+'</div></div>'
+
+  +'<div class="rows"><div class="hd">اشتراكاتي</div>'
+   +M.subs.map(function(s){
+      var c = s.kind==='ok'?'#3FBF7F':(s.kind==='exp'?'#E4572E':acc);
+      return '<div class="rw">'+ico([I.card,I.ball,I.gym][M.subs.indexOf(s)], line)
+        +'<div><div class="t1">'+s.t+'</div><div class="t2">'+s.s+'</div></div>'
+        +'<span class="tag" style="color:'+c+'">'+s.st+'</span></div>';
+   }).join('')+'</div>'
+
+  +'<div class="rows"><div class="hd">الجاي</div>'
+    +'<div class="rw">'+ico(I.cal,line)+'<div><div class="t1">'+M.book.t+'</div><div class="t2">'+M.book.s+'</div></div></div>'
+    +'<div class="rw">'+ico(I.star,line)+'<div><div class="t1">'+M.event+'</div><div class="t2">'+M.eventWhen+'</div></div></div>'
+  +'</div>'
+
+  +'<div class="hot"><div style="font-size:12px;color:'+dim+'">الخط الساخن</div><div class="n">17302</div></div>'
+  +'</div>'+nav(NAV, acc, dim);
+}
+
+/* ---------------- B ---------------- */
+function dirB(t){
+  var line = t==='light' ? '#1E0E33' : '#F7E7D3';
+  var acc  = t==='light' ? '#C2551A' : '#F28C42';
+  var dim  = t==='light' ? 'rgba(30,14,51,.42)' : 'rgba(247,231,211,.34)';
+  return bar(t)+'<div class="body">'
+  +'<div class="beam">'
+    +'<div style="display:flex;justify-content:space-between;align-items:flex-start">'
+      +'<div><div class="lede">أهلاً يا '+M.name.split(' ')[0]+'</div></div>'+crest(34,line,acc)
+    +'</div>'
+    +'<div class="huge">'+M.days+'<span>.</span></div>'
+    +'<div class="under">يوم باقي على تجديد <em>عضويتك</em></div>'
+    +'<div class="meta">بلاتينيوم · '+M.id+' · تنتهي '+M.renew+'</div>'
+    +'<button class="cta">جدّد بـ '+M.due+' ج.م</button>'
+  +'</div>'
+
+  +'<div class="strip">'+M.quick.map(function(q,i){
+      return '<button class="chip'+(i===0?' hi':'')+'">'+q.t+'</button>';
+   }).join('')+'</div>'
+
+  +'<div class="rim"><div class="k">تنويه من إدارة النادي</div><div class="v">'+M.notice+'</div></div>'
+
+  +'<div class="sec"><h4>اشتراكاتي</h4>'
+   +M.subs.map(function(s,i){
+     return '<div class="ln">'+ico([I.card,I.ball,I.gym][i], line)
+       +'<div><div class="t1">'+s.t+'</div><div class="t2">'+s.s+'</div></div>'
+       +'<span class="amt'+(s.kind==='due'?' due':'')+'">'+s.st+'</span></div>';
+   }).join('')+'</div>'
+
+  +'<div class="sec"><h4>الجاي</h4>'
+    +'<div class="ln">'+ico(I.cal,line)+'<div><div class="t1">'+M.book.t+'</div><div class="t2">'+M.book.s+'</div></div></div>'
+    +'<div class="ln">'+ico(I.star,line)+'<div><div class="t1">'+M.event+'</div><div class="t2">'+M.eventWhen+'</div></div></div>'
+  +'</div>'
+
+  +'<div class="hot"><div style="font-size:12px;color:'+dim+'">الخط الساخن</div><div class="n">17302</div></div>'
+  +'</div>'+nav(NAV, acc, dim);
+}
+
+/* ---------------- C ---------------- */
+function dirC(t){
+  var line = t==='dark' ? '#F2E4D2' : '#241038';
+  var acc  = t==='dark' ? '#F7A863' : '#B44E14';
+  var dim  = t==='dark' ? 'rgba(242,228,210,.5)' : 'rgba(36,16,56,.5)';
+  return bar(t)+'<div class="body">'
+  +'<div class="seal">'+crest(58,line,acc)
+    +'<div class="club">Glory Sports Club</div>'
+    +'<div class="nm">'+M.name+'</div>'
+    +'<div class="rank">'+M.tier+'</div>'
+  +'</div>'
+
+  +'<div class="ledger">'
+    +'<div class="lg"><span class="k">رقم العضوية</span><span class="dots"></span><span class="v">'+M.id+'</span></div>'
+    +'<div class="lg"><span class="k">سارية حتى</span><span class="dots"></span><span class="v">'+M.renew+'</span></div>'
+    +'<div class="lg"><span class="k">المتبقي</span><span class="dots"></span><span class="v">'+M.days+' يوم</span></div>'
+    +'<div class="lg"><span class="k">المستحق للتجديد</span><span class="dots"></span><span class="v due">'+M.due+' ج.م</span></div>'
+  +'</div>'
+  +'<button class="cta">Renew · جدّد</button>'
+
+  +'<div class="rule">الاشتراكات</div><div class="art">'
+   +M.subs.map(function(s,i){
+     return '<div class="ar"><span class="no">'+('0'+(i+1))+'</span>'
+      +'<div><div class="t1">'+s.t+'</div><div class="t2">'+s.s+'</div></div>'
+      +'<span class="st">'+s.st+'</span></div>';
+   }).join('')+'</div>'
+
+  +'<div class="notice"><div class="t"><b>تنويه.</b> '+M.notice+'</div></div>'
+
+  +'<div class="rule">المواعيد</div><div class="art">'
+    +'<div class="ar"><span class="no">'+String.fromCharCode(8226)+'</span><div><div class="t1">'+M.book.t+'</div><div class="t2">'+M.book.s+'</div></div></div>'
+    +'<div class="ar"><span class="no">'+String.fromCharCode(8226)+'</span><div><div class="t1">'+M.event+'</div><div class="t2">'+M.eventWhen+'</div></div></div>'
+  +'</div>'
+
+  +'<div class="hot"><div class="n">17302</div><div class="k">الخط الساخن لخدمة الأعضاء</div></div>'
+  +'</div>'+nav(NAV, acc, dim);
+}
+
+/* ---------------- D ---------------- */
+function dirD(t){
+  var tilefg = t==='dark' ? '#F7E7D3' : '#2A1349';
+  var acc    = t==='dark' ? '#F28C42' : '#2A1349';
+  var dim    = t==='dark' ? 'rgba(247,231,211,.6)' : 'rgba(42,19,73,.62)';
+  var onfield= t==='dark' ? '#F7E7D3' : '#2A1349';
+  return bar(t)+'<div class="body">'
+  +'<div class="top">'+crest(34,onfield,t==='dark'?'#F28C42':'#F7E7D3')
+    +'<div><div class="hi">أهلاً بيك في نادي البطل</div><div class="nm">'+M.name+'</div></div></div>'
+
+  +'<div class="card">'
+    +'<div class="row"><div><div class="cap">عضويتك '+M.tier+'</div>'
+      +'<div class="big">'+M.days+' <small>يوم فاضل</small></div></div>'
+      +'<span class="sticker">مستحق '+M.due+'</span></div>'
+    +'<div class="cap">تنتهي '+M.renew+' · '+M.id+'</div>'
+    +'<button class="cta">جدّد دلوقتي</button>'
+  +'</div>'
+
+  +'<div class="grid">'
+    +M.quick.map(function(q,i){
+      return '<div class="tile">'+ico([I.tag,I.cal,I.ball,I.qr][i], tilefg, 24)
+        +'<div><div class="t">'+q.t+'</div><div class="s">'+q.s+'</div></div></div>';
+    }).join('')
+    +'<div class="tile wide">'+ico(I.warn, tilefg, 22)
+      +'<div><div class="t">تنويه من النادي</div><div class="s">'+M.notice+'</div></div></div>'
+  +'</div>'
+
+  +'<div class="hdr">اشتراكاتي</div><div class="lst">'
+   +M.subs.map(function(s,i){
+     return '<div class="it">'+ico([I.card,I.ball,I.gym][i], tilefg)
+       +'<div><div class="t1">'+s.t+'</div><div class="t2">'+s.s+'</div></div>'
+       +'<span class="b">'+s.st+'</span></div>';
+   }).join('')+'</div>'
+
+  +'<div class="hdr">الجاي</div><div class="lst">'
+    +'<div class="it">'+ico(I.cal,tilefg)+'<div><div class="t1">'+M.book.t+'</div><div class="t2">'+M.book.s+'</div></div></div>'
+    +'<div class="it">'+ico(I.star,tilefg)+'<div><div class="t1">'+M.event+'</div><div class="t2">'+M.eventWhen+'</div></div></div>'
+  +'</div>'
+
+  +'<div class="hot"><div style="font-size:12px;color:'+dim+'">الخط الساخن</div><div class="n">17302</div></div>'
+  +'</div>'+nav(NAV, acc, dim);
+}
+
+var DIRS = [
+  {k:'a', letter:'A', title:'غرفة ملابس البطل', en:'The Champion’s Locker Room',
+   fam:'لوحة اسم محفورة على باب لوكر. كل حاجة مثبتة، مفيش حاجة طايرة، والخطوط الرفيعة هي اللي بتفصل. كثيف وجاد وذكوري الطابع.',
+   axis:'المحور: الكثافة والبنية', fn:dirA, first:'dark'},
+  {k:'b', letter:'B', title:'الملعب تحت الكشافات', en:'The Floodlit Pitch',
+   fam:'مصدر ضوء واحد جاي من فوق يمين. رقم الأيام الباقية هو البطل، وباقي الشاشة بيغيب في الضلمة. سينمائي ومركّز.',
+   axis:'المحور: ترتيب الأهمية والتراكب', fn:dirB, first:'dark'},
+  {k:'c', letter:'C', title:'شعار الأعضاء', en:'The Members’ Crest',
+   fam:'ورق قبل أي حاجة. النادي كمؤسسة: ختم في النص، سطور دفتر بنقط، وخط عربي رسمي. هادي ورسمي ومحترم.',
+   axis:'المحور: دور اللون ونظام الخطوط', fn:dirC, first:'light'},
+  {k:'d', letter:'D', title:'يوم رياضي مصري', en:'The Egyptian Sports Day',
+   fam:'النسبة بتتقلب: البرتقالي بقى الأرضية والبنفسجي بقى الحبر. مربعات وستيكرات وخط عريض. عالي الصوت وموجّه للعيلة.',
+   axis:'المحور: شكل الصفحة وتوزيعها', fn:dirD, first:'light'}
+];
+
+var stage = document.getElementById('stage');
+stage.innerHTML = DIRS.map(function(d){
+  var themes = d.first === 'dark' ? ['dark','light'] : ['light','dark'];
+  return '<section class="band">'
+   +'<div class="band-head"><div class="band-letter">'+d.letter+'</div>'
+     +'<div class="band-title"><h2>'+d.title+' <span style="opacity:.5;font-weight:600;font-size:15px">'+d.en+'</span></h2>'
+     +'<div class="fam">'+d.fam+'</div><span class="axis">'+d.axis+'</span></div></div>'
+   +'<div class="pair">'+themes.map(function(t){
+      return '<div class="slot"><div class="phone"><div class="notch"></div>'
+        +'<div class="scr" data-dir="'+d.k+'" data-theme="'+t+'">'+d.fn(t)+'</div></div>'
+        +'<div class="cap">'+(t==='dark'?'Dark':'Light')+'</div></div>';
+   }).join('')+'</div></section>';
+}).join('');
+</script>
+</body>
+</html>
